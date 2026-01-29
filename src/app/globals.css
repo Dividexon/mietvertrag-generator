@@ -2,65 +2,165 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mariplex Design System - Light Theme */
 :root {
-  --foreground: #171717;
-  --background: #ffffff;
+  --color-primary: #0891B2;
+  --color-primary-dark: #0E7490;
+  --color-primary-light: #22D3EE;
+  --color-primary-container: #CCFBF1;
+  
+  --color-secondary: #475569;
+  --color-secondary-light: #94A3B8;
+  
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-variant: #F1F5F9;
+  
+  --color-text: #0F172A;
+  --color-text-light: #64748B;
+  
+  --color-success: #10B981;
+  --color-danger: #F43F5E;
+  --color-warning: #F59E0B;
+  
+  --color-border: #E2E8F0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground: #ededed;
-    --background: #0a0a0a;
-  }
+/* Mariplex Design System - Dark Theme */
+.dark {
+  --color-primary: #22D3EE;
+  --color-primary-dark: #0891B2;
+  --color-primary-light: #67E8F9;
+  --color-primary-container: #164E63;
+  
+  --color-secondary: #94A3B8;
+  --color-secondary-light: #CBD5E1;
+  
+  --color-background: #0F172A;
+  --color-surface: #1E293B;
+  --color-surface-variant: #334155;
+  
+  --color-text: #F1F5F9;
+  --color-text-light: #94A3B8;
+  
+  --color-success: #34D399;
+  --color-danger: #FB7185;
+  --color-warning: #FBBF24;
+  
+  --color-border: #334155;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--color-text);
+  background: var(--color-background);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom styles */
+/* Form Components */
 .form-section {
-  @apply bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700;
+  @apply bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm 
+         border border-slate-200 dark:border-slate-700
+         transition-colors duration-300;
 }
 
 .form-label {
-  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+  @apply block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1;
 }
 
 .form-input {
-  @apply w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 
-         bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+  @apply w-full px-4 py-2.5 rounded-xl 
+         border border-slate-300 dark:border-slate-600 
+         bg-white dark:bg-slate-700 
+         text-slate-900 dark:text-white
+         placeholder-slate-400 dark:placeholder-slate-500
          focus:ring-2 focus:ring-primary focus:border-transparent
          transition-all duration-200;
 }
 
+.form-input:focus {
+  @apply outline-none ring-2 ring-cyan-500 border-transparent;
+}
+
+/* Buttons */
 .btn-primary {
-  @apply px-6 py-3 bg-primary text-white font-semibold rounded-lg
-         hover:bg-indigo-700 transition-all duration-200
+  @apply px-6 py-3 bg-cyan-600 dark:bg-cyan-500 text-white font-semibold rounded-xl
+         hover:bg-cyan-700 dark:hover:bg-cyan-400 
+         active:scale-[0.98]
+         transition-all duration-200
          disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn-secondary {
-  @apply px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white 
-         font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 
+  @apply px-6 py-3 bg-slate-200 dark:bg-slate-700 
+         text-slate-800 dark:text-white 
+         font-semibold rounded-xl 
+         hover:bg-slate-300 dark:hover:bg-slate-600 
+         active:scale-[0.98]
          transition-all duration-200;
 }
 
+.btn-outline {
+  @apply px-6 py-3 bg-transparent 
+         border-2 border-cyan-600 dark:border-cyan-400
+         text-cyan-600 dark:text-cyan-400 
+         font-semibold rounded-xl 
+         hover:bg-cyan-50 dark:hover:bg-cyan-900/20
+         active:scale-[0.98]
+         transition-all duration-200;
+}
+
+/* Step Indicator */
 .step-indicator {
   @apply flex items-center justify-center w-10 h-10 rounded-full 
          border-2 font-semibold transition-all duration-300;
 }
 
 .step-indicator.active {
-  @apply bg-primary border-primary text-white;
+  @apply bg-cyan-600 dark:bg-cyan-500 border-cyan-600 dark:border-cyan-500 text-white;
 }
 
 .step-indicator.completed {
-  @apply bg-green-500 border-green-500 text-white;
+  @apply bg-emerald-500 border-emerald-500 text-white;
 }
 
 .step-indicator.pending {
-  @apply bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500;
+  @apply bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-500;
+}
+
+/* Cards */
+.card {
+  @apply bg-white dark:bg-slate-800 rounded-2xl p-6 
+         border border-slate-200 dark:border-slate-700
+         shadow-sm hover:shadow-md
+         transition-all duration-300;
+}
+
+.card-selected {
+  @apply ring-2 ring-cyan-500 border-transparent;
+}
+
+/* Header gradient */
+.header-gradient {
+  background: linear-gradient(135deg, #0891B2 0%, #06B6D4 100%);
+}
+
+.dark .header-gradient {
+  background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
+}
+
+/* Status badges */
+.badge-success {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+         bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400;
+}
+
+.badge-warning {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+         bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400;
+}
+
+.badge-danger {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+         bg-rose-100 dark:bg-rose-900/30 text-rose-800 dark:text-rose-400;
 }

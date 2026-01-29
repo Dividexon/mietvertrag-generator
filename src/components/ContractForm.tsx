@@ -36,13 +36,13 @@ export default function ContractForm({ contractType, step, data, updateData, onB
               {step > s.id ? '✓' : s.id}
             </div>
             <span className={`ml-2 text-sm hidden sm:inline ${
-              step >= s.id ? 'text-gray-900 dark:text-white' : 'text-gray-400'
+              step >= s.id ? 'text-slate-900 dark:text-white' : 'text-slate-400'
             }`}>
               {s.title}
             </span>
             {i < steps.length - 1 && (
               <div className={`w-8 sm:w-16 h-0.5 mx-2 ${
-                step > s.id ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'
+                step > s.id ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-slate-700'
               }`} />
             )}
           </div>
@@ -86,7 +86,7 @@ export default function ContractForm({ contractType, step, data, updateData, onB
 function VermieterForm({ data, updateData }: { data: ContractData, updateData: (u: Partial<ContractData>) => void }) {
   return (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">👤 Vermieter-Daten</h3>
+      <h3 className="text-xl font-semibold text-slate-900 dark:text-white">👤 Vermieter-Daten</h3>
       
       <div className="grid md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
@@ -162,7 +162,7 @@ function VermieterForm({ data, updateData }: { data: ContractData, updateData: (
 function MieterForm({ data, updateData }: { data: ContractData, updateData: (u: Partial<ContractData>) => void }) {
   return (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">👥 Mieter-Daten</h3>
+      <h3 className="text-xl font-semibold text-slate-900 dark:text-white">👥 Mieter-Daten</h3>
       
       <div className="grid md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
@@ -232,7 +232,7 @@ function ObjektForm({ data, updateData, contractType }: {
   
   return (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+      <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
         🏠 Mietobjekt
       </h3>
       
@@ -330,8 +330,8 @@ function ObjektForm({ data, updateData, contractType }: {
               { key: 'hatEbk', label: '🍳 Einbauküche' },
             ].map(item => (
               <label key={item.key} className="flex items-center gap-2 p-3 rounded-lg border 
-                           border-gray-200 dark:border-gray-700 cursor-pointer
-                           hover:bg-gray-50 dark:hover:bg-gray-800">
+                           border-slate-200 dark:border-slate-700 cursor-pointer
+                           hover:bg-slate-50 dark:hover:bg-slate-800">
                 <input
                   type="checkbox"
                   className="w-4 h-4 text-primary rounded"
@@ -354,7 +354,7 @@ function KonditionenForm({ data, updateData }: { data: ContractData, updateData:
   
   return (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">💰 Mietkonditionen</h3>
+      <h3 className="text-xl font-semibold text-slate-900 dark:text-white">💰 Mietkonditionen</h3>
       
       <div className="grid md:grid-cols-2 gap-4">
         <div>
@@ -383,7 +383,7 @@ function KonditionenForm({ data, updateData }: { data: ContractData, updateData:
           <label className="form-label">
             Kaution (€) 
             {kaltmiete > 0 && (
-              <span className="text-xs text-gray-500 ml-2">
+              <span className="text-xs text-slate-500 ml-2">
                 (max. {maxKaution.toFixed(2)}€ = 3 Kaltmieten)
               </span>
             )}
@@ -408,8 +408,8 @@ function KonditionenForm({ data, updateData }: { data: ContractData, updateData:
         </div>
         
         <div className="md:col-span-2">
-          <label className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 
-                         dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+          <label className="flex items-center gap-3 p-4 rounded-lg border border-slate-200 
+                         dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">
             <input
               type="checkbox"
               className="w-5 h-5 text-primary rounded"
@@ -418,7 +418,7 @@ function KonditionenForm({ data, updateData }: { data: ContractData, updateData:
             />
             <div>
               <span className="font-medium">Befristeter Mietvertrag</span>
-              <p className="text-sm text-gray-500">Nur mit gesetzlichem Grund möglich (§575 BGB)</p>
+              <p className="text-sm text-slate-500">Nur mit gesetzlichem Grund möglich (§575 BGB)</p>
             </div>
           </label>
         </div>
@@ -464,16 +464,16 @@ function OptionenForm({ data, updateData }: { data: ContractData, updateData: (u
   
   return (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">⚙️ Zusätzliche Optionen</h3>
-      <p className="text-gray-600 dark:text-gray-400 text-sm">
+      <h3 className="text-xl font-semibold text-slate-900 dark:text-white">⚙️ Zusätzliche Optionen</h3>
+      <p className="text-slate-600 dark:text-slate-400 text-sm">
         Wählen Sie optionale Vertragsklauseln. Die Standardeinstellungen sind bereits rechtssicher.
       </p>
       
       <div className="space-y-3">
         {options.map(opt => (
           <label key={opt.key} className="flex items-start gap-3 p-4 rounded-lg border 
-                       border-gray-200 dark:border-gray-700 cursor-pointer
-                       hover:bg-gray-50 dark:hover:bg-gray-800">
+                       border-slate-200 dark:border-slate-700 cursor-pointer
+                       hover:bg-slate-50 dark:hover:bg-slate-800">
             <input
               type="checkbox"
               className="w-5 h-5 text-primary rounded mt-0.5"
@@ -482,7 +482,7 @@ function OptionenForm({ data, updateData }: { data: ContractData, updateData: (u
             />
             <div>
               <span className="font-medium">{opt.label}</span>
-              <p className="text-sm text-gray-500">{opt.desc}</p>
+              <p className="text-sm text-slate-500">{opt.desc}</p>
             </div>
           </label>
         ))}
