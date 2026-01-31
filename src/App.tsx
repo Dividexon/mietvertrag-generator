@@ -239,9 +239,6 @@ function App() {
           onEdit={handleEdit}
           onSettings={() => setShowSettings(true)}
         />
-        <div style={{ position: 'fixed', top: 16, right: 16, zIndex: 1000 }}>
-          <ThemeToggle mode={mode} setMode={setMode} />
-        </div>
         <SettingsModal
           isOpen={showSettings}
           onClose={() => setShowSettings(false)}
