@@ -75,6 +75,22 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     currentY += 4;
   };
 
+  // Section ohne Paragraph-Nummer (z.B. Vertragsparteien)
+  const addSection = (title: string): void => {
+    checkPageBreak(12);
+    currentY += 4;
+    doc.setFillColor(config.colors.accent);
+    doc.rect(config.margin.left, currentY - 3, 2, 6, 'F');
+    doc.setFontSize(config.fontSize.heading);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(config.colors.primary);
+    doc.text(title, config.margin.left + 5, currentY);
+    currentY += 6;
+    doc.setDrawColor(config.colors.line);
+    doc.line(config.margin.left, currentY, pageWidth - config.margin.right, currentY);
+    currentY += 4;
+  };
+
   const addText = (text: string, indent: number = 0): void => {
     doc.setFontSize(config.fontSize.normal);
     doc.setFont('helvetica', 'normal');
@@ -149,8 +165,8 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   addSubtitle(vertrag.vertragsart === 'wohnraum' ? 'fuer Wohnraum' : vertrag.vertragsart === 'gewerbe' ? 'fuer Gewerberaeume' : 'fuer Garage/Stellplatz');
   addSpace(5);
 
-  // §1 VERTRAGSPARTEIEN
-  addParagraph('§ 1', 'Vertragsparteien');
+  // VERTRAGSPARTEIEN (ohne §)
+  addSection('Vertragsparteien');
   addText('Zwischen');
   addSpace(2);
   
@@ -190,8 +206,8 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   addSpace(2);
   addText('wird folgender Mietvertrag geschlossen:');
 
-  // §2 MIETRAEUME
-  addParagraph('§ 2', 'Mietraeume');
+  // §1 MIETRAEUME
+  addParagraph('§ 1', 'Mietraeume');
   const { mietobjekt } = vertrag;
   addText(`Vermietet wird zu Wohnzwecken die Wohnung / das Haus:`);
   addSpace(2);
@@ -215,8 +231,8 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   addSpace(2);
   addLabelValue('Schluessel', `${mietobjekt.schluessel.haus} Haus, ${mietobjekt.schluessel.wohnung} Wohnung, ${mietobjekt.schluessel.briefkasten} Briefkasten`, 0);
 
-  // §3 MIETZEIT
-  addParagraph('§ 3', 'Mietzeit');
+  // §2 MIETZEIT
+  addParagraph('§ 2', 'Mietzeit');
   const { mietzeit } = vertrag;
   if (!mietzeit.befristet) {
     addBoldText('Unbefristetes Mietverhaeltnis');
@@ -231,15 +247,15 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     }
   }
 
-  // §4 KUENDIGUNG
-  addParagraph('§ 4', 'Kuendigung des Vertrages');
+  // §3 KUENDIGUNG
+  addParagraph('§ 3', 'Kuendigung des Vertrages');
   addNumberedItem('1.', 'Ein Mietverhaeltnis von unbestimmter Dauer kann spaetestens bis zum dritten Werktag eines Kalendermonats fuer den Ablauf des uebernaechsten Kalendermonats gekuendigt werden. Die Kuendigung muss schriftlich erfolgen.');
   addNumberedItem('2.', 'Die Kuendigungsfrist fuer den Vermieter verlaengert sich nach 5 Jahren seit der Ueberlassung des Wohnraumes auf 6 Monate und nach 8 Jahren auf 9 Monate.');
   addNumberedItem('3.', 'Fuer die Rechtzeitigkeit der Kuendigung kommt es nicht auf die Absendung, sondern auf den Zugang des Kuendigungsschreibens an.');
   addNumberedItem('4.', 'Die Fortsetzung des Gebrauchs der Mietsache nach Ablauf des Mietverhaeltnisses gilt nicht als Verlaengerung. § 545 BGB wird ausgeschlossen.');
 
-  // §5 MIETE
-  addParagraph('§ 5', 'Miete');
+  // §4 MIETE
+  addParagraph('§ 4', 'Miete');
   const { miete } = vertrag;
   addBoldText('Die monatliche Miete setzt sich wie folgt zusammen:');
   addSpace(2);
@@ -261,7 +277,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
 
   // §6 MIETERHOEHUNG (wenn vorhanden)
   if (vertrag.mieterhoehung.typ === 'staffel' && vertrag.mieterhoehung.staffeln.length > 0) {
-    addParagraph('§ 6', 'Staffelmiete');
+    addParagraph('§ 5', 'Staffelmiete');
     addText('Die Miete erhoeht sich zu folgenden Zeitpunkten (Staffelmiete gemaess § 557a BGB):');
     addSpace(2);
     vertrag.mieterhoehung.staffeln.forEach((s, i) => {
@@ -271,14 +287,14 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   }
 
   if (vertrag.mieterhoehung.typ === 'index') {
-    addParagraph('§ 6', 'Indexmiete');
+    addParagraph('§ 5', 'Indexmiete');
     addText(`Die Vertragsparteien vereinbaren eine Indexmiete (gemaess § 557b BGB).`);
     addText(`Aendert sich der Verbraucherpreisindex um mehr als ${vertrag.mieterhoehung.indexSchwelle}%, aendert sich die Miete entsprechend.`);
     addText('Waehrend der Geltung einer Indexmiete muss die Miete mindestens 12 Monate unveraendert bleiben.');
   }
 
-  // §7 BETRIEBSKOSTEN
-  addParagraph('§ 7', 'Betriebskosten');
+  // §6 BETRIEBSKOSTEN
+  addParagraph('§ 6', 'Betriebskosten');
   addText('Neben der Grundmiete sind vom Mieter nachstehende Betriebskosten zu tragen:');
   addSpace(2);
   
@@ -294,8 +310,8 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   addSpace(2);
   addText('Die Abrechnung muss dem Mieter spaetestens bis zum Ablauf des 12. Monats nach Ende des Abrechnungszeitraumes zugegangen sein (§ 556 Abs. 3 BGB).');
 
-  // §8 FAELLIGKEIT / BANKVERBINDUNG
-  addParagraph('§ 8', 'Faelligkeit der Miete und Bankverbindung');
+  // §7 FAELLIGKEIT / BANKVERBINDUNG
+  addParagraph('§ 7', 'Faelligkeit der Miete und Bankverbindung');
   addText('Die Miete ist spaetestens bis zum 3. Werktag eines jeden Kalendermonats im Voraus auf folgendes Konto zu ueberweisen:');
   addSpace(2);
   const { bankverbindung } = vertrag;
@@ -305,20 +321,20 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   addSpace(2);
   addText('Bei Zahlungsverzug ist der Vermieter berechtigt, Verzugszinsen und Mahnkosten zu erheben.');
 
-  // §9 HEIZUNG
-  addParagraph('§ 9', 'Heizung');
+  // §8 HEIZUNG
+  addParagraph('§ 8', 'Heizung');
   const { heizung } = vertrag;
   addText(`Die Wohnraeume werden, soweit es die Witterung erfordert, mindestens vom ${heizung.heizperiodeVon} bis ${heizung.heizperiodeBis} in der Zeit von ${heizung.heizzeitVon} bis ${heizung.heizzeitBis} Uhr mit einer Temperatur von nicht weniger als 20 Grad Celsius beheizt.`);
   if (heizung.art) addLabelValue('Heizungsart', heizung.art, 0);
   addText('Der Mieter ist verpflichtet, die anteiligen Kosten fuer den Betrieb der Heizungsanlage zu bezahlen.');
 
-  // §10 WASSERVERSORGUNG
-  addParagraph('§ 10', 'Wasserversorgung');
+  // §9 WASSERVERSORGUNG
+  addParagraph('§ 9', 'Wasserversorgung');
   addText('Wird der Verbrauch fuer Warm- und/oder Kaltwasser durch Messgeraete erfasst, ist der Mieter verpflichtet, die Kosten fuer Anmietung, Ablesung, Wartung und Eichung der Geraete zu bezahlen.');
   addText('Die Warmwasserversorgung erfolgt im ganzen Jahr. Der Mieter ist zur Bezahlung seines Anteils auch dann verpflichtet, wenn er Warmwasser nicht abnimmt.');
 
-  // §11 BENUTZUNG DER MIETSACHE
-  addParagraph('§ 11', 'Benutzung der Mietsache');
+  // §10 BENUTZUNG DER MIETSACHE
+  addParagraph('§ 10', 'Benutzung der Mietsache');
   addText('Mit Ruecksicht auf die Gesamtheit der Mieter und die Belange des Vermieters bedarf es der vorherigen Zustimmung des Vermieters, wenn der Mieter:');
   addText('a) die Wohnung Dritten ueberlassen will (ausser Besuch von angemessener Dauer)', 5);
   addText('b) die Wohnung zu anderen als Wohnzwecken nutzen will', 5);
@@ -327,18 +343,18 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   addText('e) Antennen anbringen oder veraendern will', 5);
   addText('f) Um-, An- und Einbauten vornehmen will', 5);
 
-  // §12 BAULICHE VERAENDERUNGEN
-  addParagraph('§ 12', 'Bauliche Veraenderungen durch den Vermieter');
+  // §11 BAULICHE VERAENDERUNGEN
+  addParagraph('§ 11', 'Bauliche Veraenderungen durch den Vermieter');
   addText('Bauliche Veraenderungen sowie Erhaltungsmassnahmen, die zur Abwendung drohender Gefahren notwendig werden, darf der Vermieter auch ohne Zustimmung vornehmen.');
   addText('Bei Modernisierungsmassnahmen hat der Vermieter dem Mieter spaetestens 3 Monate vor Beginn Art, Umfang und voraussichtliche Dauer schriftlich mitzuteilen.');
 
-  // §13 BETRETEN DER MIETRAEUME
-  addParagraph('§ 13', 'Betreten der Mietraeume');
+  // §12 BETRETEN DER MIETRAEUME
+  addParagraph('§ 12', 'Betreten der Mietraeume');
   addText('Der Mieter hat waehrend der ueblichen Tageszeit (werktags bis 19 Uhr) zu gewaehrleisten, dass der Vermieter und/oder Beauftragte aus begruendetem Anlass nach Terminvereinbarung die Mietsache betreten koennen.');
   addText('Ein begruendeter Anlass liegt z.B. vor: Ablesen von Messgeraeten, Pruefung von Schaeden, Reparaturarbeiten, Besichtigung bei Kuendigung oder Verkaufsabsicht.');
 
-  // §14 INSTANDHALTUNG / KLEINREPARATUREN
-  addParagraph('§ 14', 'Instandhaltung der Mietsache');
+  // §13 INSTANDHALTUNG / KLEINREPARATUREN
+  addParagraph('§ 13', 'Instandhaltung der Mietsache');
   addText('Der Mieter hat die Mietsache schonend und pfleglich zu behandeln und dafuer Sorge zu tragen, dass die Raeume ganzjaehrig ausreichend beheizt und belueftet werden.');
   addText('Schaeden sind dem Vermieter unverzueglich anzuzeigen.');
   addSpace(2);
@@ -347,8 +363,8 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     addText(`Der Mieter hat die Kosten fuer Kleinreparaturen zu tragen bis zu ${formatCurrency(vertrag.kleinreparaturen.maxEinzel)} pro Einzelfall und maximal ${formatCurrency(vertrag.kleinreparaturen.maxJahr)} pro Kalenderjahr.`);
   }
 
-  // §15 SCHOENHEITSREPARATUREN
-  addParagraph('§ 15', 'Schoenheitsreparaturen');
+  // §14 SCHOENHEITSREPARATUREN
+  addParagraph('§ 14', 'Schoenheitsreparaturen');
   addText('Zu den Schoenheitsreparaturen gehoeren: Tapezieren oder Anstreichen der Waende und Decken, Streichen der Heizkoerper, Innentueren, Fenster von innen sowie Reinigen der Fussboeden.');
   addSpace(2);
   const zustandLabels: Record<string, string> = {
@@ -361,30 +377,30 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     addText('Der Mieter ist waehrend der Mietzeit verpflichtet, die laufenden Schoenheitsreparaturen auf seine Kosten fachgerecht auszufuehren, soweit diese durch seinen Gebrauch erforderlich werden.');
   }
 
-  // §16 HAUSORDNUNG
-  addParagraph('§ 16', 'Hausordnung');
+  // §15 HAUSORDNUNG
+  addParagraph('§ 15', 'Hausordnung');
   addText('Die diesem Vertrag beigefuegte Hausordnung ist Bestandteil dieses Vertrages.');
   addText('Sie kann vom Vermieter geaendert werden, wenn dringende Gruende der Ordnung oder Bewirtschaftung dies erfordern.');
 
-  // §17 ENTSCHAEDIGUNGSPFLICHT
-  addParagraph('§ 17', 'Entschaedigungspflicht nach Beendigung');
+  // §16 ENTSCHAEDIGUNGSPFLICHT
+  addParagraph('§ 16', 'Entschaedigungspflicht nach Beendigung');
   addText('Wird die Raeumung nach Beendigung des Mietverhaeltnisses verzoegert, ist der Mieter verpflichtet, eine Entschaedigung bis zur Hoehe der ortsueblichen Vergleichsmiete, mindestens jedoch in Hoehe der vereinbarten Miete, bis zur vollstaendigen Raeumung zu zahlen.');
 
-  // §18 RUECKGABE DER MIETSACHE
-  addParagraph('§ 18', 'Rueckgabe der Mietsache');
+  // §17 RUECKGABE DER MIETSACHE
+  addParagraph('§ 17', 'Rueckgabe der Mietsache');
   addText('Bei Beendigung des Mietverhaeltnisses sind die Raeume vollstaendig geraeumt und ordnungsgemaess gereinigt herauszugeben.');
   addText('Alle Schluessel, auch vom Mieter selbst beschaffte, sind dem Vermieter zu uebergeben.');
   addText('Hat der Mieter bauliche Veraenderungen vorgenommen, ist er auf Verlangen des Vermieters verpflichtet, den urspruenglichen Zustand wiederherzustellen.');
 
-  // §19 PERSONENMEHRHEIT
+  // §18 PERSONENMEHRHEIT
   if (vertrag.mieter.length > 1) {
-    addParagraph('§ 19', 'Personenmehrheit als Mieter');
+    addParagraph('§ 18', 'Personenmehrheit als Mieter');
     addText('Mehrere Personen als Mieter haften fuer alle Verpflichtungen aus dem Mietvertrag als Gesamtschuldner.');
     addText('Rechtsgestaltende Erklaerungen muessen von oder gegenueber allen Mietern abgegeben werden.');
   }
 
-  // §20 KAUTION
-  addParagraph('§ 20', 'Mietsicherheit (Kaution)');
+  // §19 KAUTION
+  addParagraph('§ 19', 'Mietsicherheit (Kaution)');
   const { kaution } = vertrag;
   addText(`Es wird eine Mietsicherheit in Hoehe von ${formatCurrency(kaution.betrag)} vereinbart (max. 3 Monatsgrundmieten gemaess § 551 BGB).`);
   const zahlungsarten: Record<string, string> = {
@@ -394,19 +410,19 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   addLabelValue('Zahlungsart', zahlungsarten[kaution.zahlungsart] || '-', 0);
   addText('Die Kaution wird nach Beendigung des Mietverhaeltnisses und Pruefung aller Ansprueche zurueckgezahlt.');
 
-  // §21 SONSTIGE VEREINBARUNGEN
+  // §20 SONSTIGE VEREINBARUNGEN
   if (vertrag.sonstigeVereinbarungen.text) {
-    addParagraph('§ 21', 'Sonstige Vereinbarungen');
+    addParagraph('§ 20', 'Sonstige Vereinbarungen');
     addText(vertrag.sonstigeVereinbarungen.text);
   }
 
-  // §22 DATENSCHUTZ
-  addParagraph('§ 22', 'Datenschutz');
+  // §21 DATENSCHUTZ
+  addParagraph('§ 21', 'Datenschutz');
   addText('Vermieter und Mieter sind damit einverstanden, dass Daten dieses Vertrages (Lage, Art, Groesse, Miete) an Dritte zur Erstellung von Mietspiegeln uebermittelt werden duerfen.');
   addText('Der Mieter hat einen Anspruch auf Auskunft ueber gespeicherte Daten gemaess DSGVO.');
 
-  // §23 SCHLUSSBESTIMMUNGEN
-  addParagraph('§ 23', 'Schlussbestimmungen');
+  // §22 SCHLUSSBESTIMMUNGEN
+  addParagraph('§ 22', 'Schlussbestimmungen');
   addText('Aenderungen und Ergaenzungen dieses Vertrages beduerfen der Schriftform.');
   addText('Sollten einzelne Bestimmungen unwirksam sein, wird die Wirksamkeit der uebrigen Bestimmungen nicht beruehrt.');
   addText('Der Mieter bestaetigt, ein Exemplar dieses Mietvertrages und die Hausordnung erhalten zu haben.');
@@ -416,7 +432,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   const unterschriftenHoehe = 50 + (mieterAnzahl * 40);
   checkPageBreak(unterschriftenHoehe);
   
-  addParagraph('§ 24', 'Unterschriften');
+  addParagraph('§ 23', 'Unterschriften');
   const { unterschriften } = vertrag;
   addSpace(3);
   addText(`${unterschriften.ort || 'Bremen'}, den ${formatDate(unterschriften.datum)}`);

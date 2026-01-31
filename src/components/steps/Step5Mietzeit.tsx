@@ -20,7 +20,7 @@ export function Step5Mietzeit({ vertrag, updateVertrag, onNext, onPrev }: Props)
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§2 Mietzeit</h2>
+          <h2>§1 Mietzeit</h2>
         </div>
         <div className="card-content">
           <div className="form-group">
@@ -119,7 +119,7 @@ export function Step5Mietzeit({ vertrag, updateVertrag, onNext, onPrev }: Props)
         <div className="card">
           <div className="card-header">
             <div className="accent-bar" />
-            <h2>§3 Kündigung des Vertrages</h2>
+            <h2>§2 Kündigung des Vertrages</h2>
           </div>
           <div className="card-content">
             <p style={{ color: 'var(--text-secondary)' }}>
@@ -130,7 +130,7 @@ export function Step5Mietzeit({ vertrag, updateVertrag, onNext, onPrev }: Props)
               <li><strong>Vermieter:</strong> 3 Monate (bis 5 Jahre), 6 Monate (bis 8 Jahre), 9 Monate (ab 8 Jahre)</li>
             </ul>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '12px' }}>
-              Die vollständigen Kündigungsregelungen (§3) werden automatisch in den Vertrag aufgenommen.
+              Die vollständigen Kündigungsregelungen (§2) werden automatisch in den Vertrag aufgenommen.
             </p>
           </div>
         </div>

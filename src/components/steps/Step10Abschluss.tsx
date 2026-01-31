@@ -36,7 +36,7 @@ export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev, onSa
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§20 Mietsicherheit (Kaution)</h2>
+          <h2>§19 Mietsicherheit (Kaution)</h2>
         </div>
         <div className="card-content">
           <div className="form-row">
