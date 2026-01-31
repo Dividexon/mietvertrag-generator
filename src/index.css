@@ -1682,6 +1682,13 @@ select {
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 20px;
+  border: 3px dashed transparent;
+  transition: all 0.2s;
+}
+
+.signature-pad-canvas-wrapper.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-light);
 }
 
 .signature-pad-canvas {
@@ -1729,6 +1736,16 @@ select {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+}
+
+.signature-pad-btn.upload {
+  background: var(--bg-input);
+  color: var(--text-secondary);
+}
+
+.signature-pad-btn.upload:hover {
+  background: var(--accent-light);
+  color: var(--accent);
 }
 
 .signature-pad-btn.clear {
