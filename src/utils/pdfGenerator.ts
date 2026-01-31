@@ -1109,12 +1109,24 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     );
   }
 
-  // Weitere Mieter
+  // Weitere Mieter (Mieter 2 links, Mieter 3 rechts daneben)
   for (let i = 1; i < vertrag.mieter.length; i++) {
-    addSpace(15);
     const m = vertrag.mieter[i];
-    const xPos = i % 2 === 1 ? leftX : rightX;
+    const isLeftColumn = i % 2 === 1; // Mieter 2 (i=1) links, Mieter 3 (i=2) rechts
+    const xPos = isLeftColumn ? leftX : rightX;
+    
+    if (isLeftColumn) {
+      // Neue Zeile starten
+      addSpace(15);
+    }
+    
+    const rowStartY = currentY;
     addSignatureArea(`Mieter ${i + 1}`, `${m.vorname} ${m.nachname}`, unterschriften.mieterSignaturen?.[i], xPos, colWidth);
+    
+    if (isLeftColumn && i + 1 < vertrag.mieter.length) {
+      // Y zurücksetzen für rechte Spalte
+      currentY = rowStartY;
+    }
   }
 
   // Footer für letzte Seite
