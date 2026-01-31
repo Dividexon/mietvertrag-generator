@@ -1,18 +1,21 @@
 import { useState, useEffect } from 'react';
-import { MdAdd, MdSearch, MdSettings, MdDescription, MdDelete, MdEdit, MdClose } from 'react-icons/md';
+import { MdAdd, MdSearch, MdSettings, MdDescription, MdDelete, MdEdit, MdClose, MdContentCopy } from 'react-icons/md';
 import { getAllVertraege, searchVertraege, deleteVertrag, type StoredVertrag } from '../services/storage';
 
 interface Props {
-  onCreateNew: () => void;
+  onCreateNew: (bezeichnung: string) => void;
   onEdit: (id: string) => void;
+  onDuplicate: (id: string, bezeichnung: string) => void;
   onSettings: () => void;
 }
 
-export function Dashboard({ onCreateNew, onEdit, onSettings }: Props) {
+export function Dashboard({ onCreateNew, onEdit, onDuplicate, onSettings }: Props) {
   const [vertraege, setVertraege] = useState<StoredVertrag[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [showNameModal, setShowNameModal] = useState<{ mode: 'new' | 'duplicate'; id?: string } | null>(null);
+  const [vertragName, setVertragName] = useState('');
 
   useEffect(() => {
     loadVertraege();
@@ -36,6 +39,19 @@ export function Dashboard({ onCreateNew, onEdit, onSettings }: Props) {
     deleteVertrag(id);
     setDeleteConfirm(null);
     loadVertraege();
+  };
+
+  const handleNameSubmit = () => {
+    if (!vertragName.trim()) return;
+    
+    if (showNameModal?.mode === 'new') {
+      onCreateNew(vertragName.trim());
+    } else if (showNameModal?.mode === 'duplicate' && showNameModal.id) {
+      onDuplicate(showNameModal.id, vertragName.trim());
+    }
+    
+    setShowNameModal(null);
+    setVertragName('');
   };
 
   const formatDate = (dateStr: string) => {
@@ -157,10 +173,21 @@ export function Dashboard({ onCreateNew, onEdit, onSettings }: Props) {
                     Bearbeiten
                   </button>
                   <button 
+                    className="vertrag-action-btn duplicate"
+                    onClick={() => {
+                      setVertragName(`${vertrag.bezeichnung} (Kopie)`);
+                      setShowNameModal({ mode: 'duplicate', id: vertrag.id });
+                    }}
+                  >
+                    <MdContentCopy size={18} />
+                    Duplizieren
+                  </button>
+                  <button 
                     className="vertrag-action-btn delete"
                     onClick={() => setDeleteConfirm(vertrag.id)}
                   >
                     <MdDelete size={18} />
+                    Löschen
                   </button>
                 </div>
 
@@ -181,9 +208,52 @@ export function Dashboard({ onCreateNew, onEdit, onSettings }: Props) {
       </main>
 
       {/* FAB Button */}
-      <button className="fab" onClick={onCreateNew} title="Neuen Mietvertrag erstellen">
+      <button 
+        className="fab" 
+        onClick={() => {
+          setVertragName('');
+          setShowNameModal({ mode: 'new' });
+        }} 
+        title="Neuen Mietvertrag erstellen"
+      >
         <MdAdd size={28} />
       </button>
+
+      {/* Name Modal */}
+      {showNameModal && (
+        <div className="name-modal-overlay">
+          <div className="name-modal">
+            <h3>{showNameModal.mode === 'new' ? 'Neuer Mietvertrag' : 'Vertrag duplizieren'}</h3>
+            <p>Vergib einen Namen für den Vertrag:</p>
+            <input
+              type="text"
+              placeholder="z.B. Wohnung Musterstraße 1"
+              value={vertragName}
+              onChange={(e) => setVertragName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
+              autoFocus
+            />
+            <div className="name-modal-actions">
+              <button 
+                className="name-modal-btn cancel"
+                onClick={() => {
+                  setShowNameModal(null);
+                  setVertragName('');
+                }}
+              >
+                Abbrechen
+              </button>
+              <button 
+                className="name-modal-btn confirm"
+                onClick={handleNameSubmit}
+                disabled={!vertragName.trim()}
+              >
+                {showNameModal.mode === 'new' ? 'Erstellen' : 'Duplizieren'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

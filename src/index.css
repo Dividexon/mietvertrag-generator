@@ -1221,8 +1221,13 @@ select {
   transition: all 0.2s;
 }
 
-.vertrag-action-btn.edit {
+.vertrag-action-btn.edit,
+.vertrag-action-btn.duplicate,
+.vertrag-action-btn.delete {
   flex: 1;
+}
+
+.vertrag-action-btn.edit {
   background: var(--accent);
   color: white;
 }
@@ -1231,10 +1236,19 @@ select {
   background: var(--accent-dark);
 }
 
+.vertrag-action-btn.duplicate {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+.vertrag-action-btn.duplicate:hover {
+  background: var(--accent-pastel);
+  color: var(--accent);
+}
+
 .vertrag-action-btn.delete {
   background: var(--bg-input);
-  color: var(--text-muted);
-  padding: 10px 12px;
+  color: var(--text-primary);
 }
 
 .vertrag-action-btn.delete:hover {
@@ -1310,6 +1324,94 @@ select {
 
 .fab:active {
   transform: scale(1.05);
+}
+
+/* Name Modal */
+.name-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.name-modal {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  animation: modalSlideIn 0.2s ease;
+}
+
+.name-modal h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.name-modal p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.name-modal input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.name-modal input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.name-modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.name-modal-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.name-modal-btn.cancel {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+.name-modal-btn.cancel:hover {
+  background: var(--border-color);
+}
+
+.name-modal-btn.confirm {
+  background: var(--accent);
+  color: white;
+}
+
+.name-modal-btn.confirm:hover {
+  background: var(--accent-dark);
+}
+
+.name-modal-btn.confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Responsive */

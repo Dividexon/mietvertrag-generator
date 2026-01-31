@@ -367,6 +367,9 @@ export interface Unterschriften {
 export interface Mietvertrag {
   id: string;
   
+  // Benutzerdefinierter Name
+  bezeichnung?: string;
+  
   // Step 1
   vertragsart: Vertragsart;
   

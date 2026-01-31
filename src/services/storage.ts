@@ -88,6 +88,11 @@ export function searchVertraege(query: string): StoredVertrag[] {
 
 // Bezeichnung generieren
 function generateBezeichnung(vertrag: Mietvertrag): string {
+  // Wenn benutzerdefinierte Bezeichnung vorhanden, diese nutzen
+  if (vertrag.bezeichnung?.trim()) {
+    return vertrag.bezeichnung.trim();
+  }
+  
   const { mietobjekt, vertragsart } = vertrag;
   
   if (!mietobjekt.strasse) {
@@ -105,13 +110,14 @@ function generateBezeichnung(vertrag: Mietvertrag): string {
 }
 
 // Vertrag duplizieren
-export function duplicateVertrag(id: string): StoredVertrag | null {
+export function duplicateVertrag(id: string, newBezeichnung?: string): StoredVertrag | null {
   const original = getVertrag(id);
   if (!original) return null;
   
   const newVertrag: Mietvertrag = {
     ...original.data,
     id: crypto.randomUUID(),
+    bezeichnung: newBezeichnung || `${original.bezeichnung} (Kopie)`,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

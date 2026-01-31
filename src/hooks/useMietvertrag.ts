@@ -309,8 +309,12 @@ export function useMietvertrag() {
   }, []);
 
   // Reset
-  const resetVertrag = useCallback(() => {
-    setVertrag(createDefaultMietvertrag());
+  const resetVertrag = useCallback((bezeichnung?: string) => {
+    const newVertrag = createDefaultMietvertrag();
+    if (bezeichnung) {
+      newVertrag.bezeichnung = bezeichnung;
+    }
+    setVertrag(newVertrag);
     setCurrentStep(1);
   }, []);
 

@@ -3,7 +3,6 @@ import { MdArrowBack, MdSave } from 'react-icons/md';
 import { ThemeToggle } from './components/ThemeToggle';
 import { ProgressBar } from './components/ProgressBar';
 import { Dashboard } from './components/Dashboard';
-import { VertragSelector } from './components/VertragSelector';
 import { SettingsModal } from './components/SettingsModal';
 import { ContractPreview, type SavedSignature } from './components/ContractPreview';
 import {
@@ -20,7 +19,7 @@ import {
 } from './components/steps';
 import { useTheme } from './hooks/useTheme';
 import { useMietvertrag } from './hooks/useMietvertrag';
-import { saveVertrag, getVertrag } from './services/storage';
+import { saveVertrag, getVertrag, duplicateVertrag } from './services/storage';
 import './index.css';
 
 const SIGNATURES_STORAGE_KEY = 'saved_signatures';
@@ -89,8 +88,8 @@ function App() {
   }, [vertrag, currentView]);
 
   // Navigation handlers
-  const handleCreateNew = () => {
-    resetVertrag();
+  const handleCreateNew = (bezeichnung: string) => {
+    resetVertrag(bezeichnung);
     setCurrentView('editor');
   };
 
@@ -98,6 +97,14 @@ function App() {
     const stored = getVertrag(id);
     if (stored) {
       loadVertrag(stored.data);
+      setCurrentView('editor');
+    }
+  };
+
+  const handleDuplicate = (id: string, bezeichnung: string) => {
+    const duplicated = duplicateVertrag(id, bezeichnung);
+    if (duplicated) {
+      loadVertrag(duplicated.data);
       setCurrentView('editor');
     }
   };
@@ -159,24 +166,6 @@ function App() {
     );
     setSavedSignatures(updated);
     localStorage.setItem(SIGNATURES_STORAGE_KEY, JSON.stringify(updated));
-  };
-
-  // Get current vertrag info for selector
-  const getVertragInfo = () => {
-    const { mietobjekt, vertragsart } = vertrag;
-    const art = vertragsart === 'wohnraum' ? 'Wohnung' :
-                vertragsart === 'gewerbe' ? 'Gewerbe' :
-                vertragsart === 'garage' ? 'Garage' : '';
-    
-    const bezeichnung = mietobjekt.strasse 
-      ? `${art} ${mietobjekt.strasse} ${mietobjekt.hausnummer}`.trim()
-      : 'Neuer Mietvertrag';
-    
-    const adresse = mietobjekt.strasse
-      ? `${mietobjekt.strasse} ${mietobjekt.hausnummer}, ${mietobjekt.plz} ${mietobjekt.ort}`
-      : 'Noch keine Adresse eingegeben';
-    
-    return { bezeichnung, adresse };
   };
 
   const renderStep = () => {
@@ -290,6 +279,7 @@ function App() {
         <Dashboard 
           onCreateNew={handleCreateNew}
           onEdit={handleEdit}
+          onDuplicate={handleDuplicate}
           onSettings={() => setShowSettings(true)}
         />
         <SettingsModal
@@ -338,12 +328,6 @@ function App() {
           <ThemeToggle mode={mode} setMode={setMode} />
         </div>
       </header>
-
-      {/* Vertrag Selector */}
-      <VertragSelector
-        currentVertrag={getVertragInfo()}
-        onSelect={handleEdit}
-      />
 
       <ProgressBar currentStep={currentStep} vertragsart={vertrag.vertragsart} onStepClick={goToStep} />
 
