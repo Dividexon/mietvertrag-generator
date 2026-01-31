@@ -1,6 +1,8 @@
-import { MdDescription, MdRefresh } from 'react-icons/md';
+import { useState } from 'react';
+import { MdArrowBack, MdSave } from 'react-icons/md';
 import { ThemeToggle } from './components/ThemeToggle';
 import { ProgressBar } from './components/ProgressBar';
+import { Dashboard } from './components/Dashboard';
 import {
   Step1Vertragsart,
   Step2Vermieter,
@@ -15,10 +17,16 @@ import {
 } from './components/steps';
 import { useTheme } from './hooks/useTheme';
 import { useMietvertrag } from './hooks/useMietvertrag';
+import { saveVertrag, getVertrag } from './services/storage';
 import './index.css';
+
+type View = 'dashboard' | 'editor';
 
 function App() {
   const { mode, setMode } = useTheme();
+  const [currentView, setCurrentView] = useState<View>('dashboard');
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  
   const {
     vertrag,
     updateVertrag,
@@ -35,7 +43,40 @@ function App() {
     removeStaffel,
     updateStaffel,
     resetVertrag,
+    loadVertrag,
   } = useMietvertrag();
+
+  // Navigation handlers
+  const handleCreateNew = () => {
+    resetVertrag();
+    setCurrentView('editor');
+  };
+
+  const handleEdit = (id: string) => {
+    const stored = getVertrag(id);
+    if (stored) {
+      loadVertrag(stored.data);
+      setCurrentView('editor');
+    }
+  };
+
+  const handleBackToDashboard = () => {
+    setCurrentView('dashboard');
+  };
+
+  const handleSave = () => {
+    setSaveStatus('saving');
+    saveVertrag(vertrag);
+    setTimeout(() => {
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus('idle'), 2000);
+    }, 500);
+  };
+
+  const handleSettings = () => {
+    // TODO: Settings modal
+    console.log('Settings clicked');
+  };
 
   const renderStep = () => {
     switch (currentStep) {
@@ -139,22 +180,52 @@ function App() {
     }
   };
 
+  // Dashboard View
+  if (currentView === 'dashboard') {
+    return (
+      <div className={mode === 'dark' ? 'dark' : ''}>
+        <Dashboard 
+          onCreateNew={handleCreateNew}
+          onEdit={handleEdit}
+          onSettings={handleSettings}
+        />
+        <div style={{ position: 'fixed', top: 16, right: 16, zIndex: 1000 }}>
+          <ThemeToggle mode={mode} setMode={setMode} />
+        </div>
+      </div>
+    );
+  }
+
+  // Editor View
   return (
     <div className="app-container">
       <header className="header">
         <div className="header-left">
-          <div className="header-icon">
-            <MdDescription size={24} color="white" />
-          </div>
-          <h1>Mietvertrag Generator</h1>
+          <button 
+            className="header-btn"
+            onClick={handleBackToDashboard}
+            title="Zurück zur Übersicht"
+          >
+            <MdArrowBack size={24} />
+          </button>
+          <h1>
+            {vertrag.vertragsart === 'wohnraum' ? 'Wohnraum-Mietvertrag' :
+             vertrag.vertragsart === 'gewerbe' ? 'Gewerbe-Mietvertrag' :
+             vertrag.vertragsart === 'garage' ? 'Garagenmietvertrag' :
+             'Mietvertrag'}
+          </h1>
         </div>
         <div className="header-actions">
           <button 
             className="header-btn" 
-            onClick={resetVertrag}
-            title="Neu starten"
+            onClick={handleSave}
+            title="Speichern"
+            style={{
+              background: saveStatus === 'saved' ? 'var(--success)' : undefined,
+              color: saveStatus === 'saved' ? 'white' : undefined,
+            }}
           >
-            <MdRefresh />
+            <MdSave size={20} />
           </button>
           <ThemeToggle mode={mode} setMode={setMode} />
         </div>

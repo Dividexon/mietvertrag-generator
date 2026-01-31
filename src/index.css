@@ -909,3 +909,358 @@ select {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* ===== DASHBOARD ===== */
+.dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+}
+
+.dashboard-header {
+  background: var(--bg-card);
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: 0 0 24px 24px;
+  box-shadow: var(--card-shadow);
+}
+
+.dark .dashboard-header {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dashboard-header-content h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.dashboard-header-content p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.dashboard-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.dashboard-header-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.dashboard-header-btn:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+/* Search Bar */
+.search-bar {
+  padding: 16px 24px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrapper .search-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--text-muted);
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding: 14px 48px;
+  border: 2px solid var(--border-color);
+  border-radius: 14px;
+  background: var(--bg-card);
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.search-input-wrapper input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.search-clear {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+  flex: 1;
+  padding: 24px;
+  padding-bottom: 100px;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  text-align: center;
+}
+
+.empty-state-icon {
+  color: var(--text-muted);
+  opacity: 0.5;
+  margin-bottom: 24px;
+}
+
+.empty-state h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+}
+
+/* Verträge Liste */
+.vertraege-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vertrag-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  transition: all 0.2s;
+}
+
+.dark .vertrag-card {
+  border: 1px solid var(--border-color);
+}
+
+.vertrag-card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+.vertrag-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.vertrag-type-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.vertrag-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.vertrag-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.vertrag-address {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.vertrag-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 16px;
+}
+
+.vertrag-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vertrag-detail .label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.vertrag-detail .value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.vertrag-detail .value.highlight {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.vertrag-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.vertrag-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.vertrag-action-btn.edit {
+  flex: 1;
+  background: var(--accent);
+  color: white;
+}
+
+.vertrag-action-btn.edit:hover {
+  background: var(--accent-dark);
+}
+
+.vertrag-action-btn.delete {
+  background: var(--bg-input);
+  color: var(--text-muted);
+  padding: 10px 12px;
+}
+
+.vertrag-action-btn.delete:hover {
+  background: var(--error);
+  color: white;
+}
+
+/* Delete Confirmation */
+.delete-confirm {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.delete-confirm p {
+  color: white;
+  font-weight: 500;
+}
+
+.delete-confirm-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.delete-confirm-actions button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.delete-confirm-actions button:first-child {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.delete-confirm-actions button.confirm {
+  background: var(--error);
+  color: white;
+}
+
+/* FAB Button */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 188, 212, 0.4);
+  transition: all 0.2s;
+  z-index: 100;
+}
+
+.fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(0, 188, 212, 0.5);
+}
+
+.fab:active {
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .dashboard-header {
+    padding: 20px 16px;
+  }
+  
+  .dashboard-header-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .dashboard-content {
+    padding: 16px;
+  }
+  
+  .vertrag-details {
+    grid-template-columns: 1fr;
+  }
+}

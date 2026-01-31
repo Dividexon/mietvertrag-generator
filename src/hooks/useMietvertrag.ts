@@ -314,6 +314,12 @@ export function useMietvertrag() {
     setCurrentStep(1);
   }, []);
 
+  // Load existing vertrag
+  const loadVertrag = useCallback((data: Mietvertrag) => {
+    setVertrag(data);
+    setCurrentStep(1);
+  }, []);
+
   // Computed: Update Gesamtmiete when values change
   const updateMieteBerechnung = useCallback(() => {
     setVertrag(prev => {
@@ -353,6 +359,7 @@ export function useMietvertrag() {
     removeStaffel,
     updateStaffel,
     resetVertrag,
+    loadVertrag,
     updateMieteBerechnung,
   };
 }
