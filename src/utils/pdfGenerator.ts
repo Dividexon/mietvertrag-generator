@@ -358,11 +358,13 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
       body: tableData,
       foot: [[total.label, formatCurrency(total.value)]],
       theme: 'striped',
+      tableWidth: 140,
       headStyles: {
         fillColor: hexToRgb(config.colors.tableHeader),
         textColor: [255, 255, 255],
         fontStyle: 'bold',
         fontSize: config.fontSize.normal,
+        halign: 'left',
       },
       footStyles: {
         fillColor: hexToRgb(config.colors.background),
@@ -378,7 +380,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
         textColor: hexToRgb(config.colors.text), // Schwarz
       },
       columnStyles: {
-        0: { cellWidth: 100 },
+        0: { cellWidth: 100, halign: 'left' },
         1: { cellWidth: 40, halign: 'right' },
       },
       margin: { left: config.margin.left, right: config.margin.right },
