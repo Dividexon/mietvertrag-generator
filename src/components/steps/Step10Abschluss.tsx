@@ -1,4 +1,5 @@
-import { MdChevronLeft, MdPictureAsPdf, MdEdit, MdWarning } from 'react-icons/md';
+import { useState } from 'react';
+import { MdChevronLeft, MdPictureAsPdf, MdEdit, MdWarning, MdSave, MdCheck } from 'react-icons/md';
 import type { Mietvertrag } from '../../types';
 import { KAUTION_ZAHLUNGSART_OPTIONS } from '../../types';
 import { generateMietvertragPDF } from '../../utils/pdfGenerator';
@@ -8,9 +9,11 @@ interface Props {
   updateVertrag: (section: keyof Mietvertrag, data: any) => void;
   goToStep: (step: number) => void;
   onPrev: () => void;
+  onSave?: () => void;
 }
 
-export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev }: Props) {
+export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev, onSave }: Props) {
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved'>('idle');
   const { vermieter, mieter, mietobjekt, mietzeit, miete, kaution, unterschriften } = vertrag;
   
   // Kaution Validierung: Max 3 Monatsgrundmieten
@@ -223,17 +226,36 @@ export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev }: Pr
         </div>
       </div>
 
-      {/* Export */}
+      {/* Action Buttons */}
       <div className="nav-buttons" style={{ flexDirection: 'column', gap: '12px' }}>
+        {/* Save Button */}
         <button 
           className="btn btn-primary" 
+          onClick={() => {
+            onSave?.();
+            setSaveStatus('saved');
+            setTimeout(() => setSaveStatus('idle'), 2000);
+          }}
+          style={{ 
+            background: saveStatus === 'saved' ? 'var(--success)' : 'var(--accent)',
+          }}
+        >
+          {saveStatus === 'saved' ? <MdCheck size={20} /> : <MdSave size={20} />}
+          {saveStatus === 'saved' ? 'Gespeichert!' : 'Mietvertrag speichern'}
+        </button>
+
+        {/* PDF Export Button */}
+        <button 
+          className="btn btn-outline" 
           onClick={handleExportPDF} 
-          style={{ background: 'var(--success)' }}
           disabled={!kautionValid}
+          style={{ width: '100%' }}
         >
           <MdPictureAsPdf size={20} />
-          Mietvertrag als PDF exportieren
+          Als PDF exportieren
         </button>
+
+        {/* Back Button */}
         <button className="btn btn-secondary btn-back" onClick={onPrev} style={{ width: '100%' }}>
           <MdChevronLeft size={20} />
           Zurück

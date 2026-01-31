@@ -223,6 +223,7 @@ function App() {
             updateVertrag={updateVertrag}
             goToStep={goToStep}
             onPrev={prevStep}
+            onSave={handleSave}
           />
         );
       default:
