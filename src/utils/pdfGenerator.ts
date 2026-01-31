@@ -422,15 +422,15 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     setColor(config.colors.background, 'fill');
     setColor(config.colors.accent, 'draw');
     doc.setLineWidth(1);
-    doc.roundedRect(config.margin.left, currentY, contentWidth, 12, 2, 2, 'FD');
-    doc.setFontSize(config.fontSize.normal);
+    doc.roundedRect(config.margin.left, currentY, contentWidth, 15, 2, 2, 'FD');
+    doc.setFontSize(config.fontSize.heading);
     doc.setFont('helvetica', 'bold');
     setColor(config.colors.text);
-    doc.text('Monatliche Vorauszahlung für Betriebskosten:', config.margin.left + 5, currentY + 8);
-    doc.text(formatCurrency(vorauszahlung), pageWidth - config.margin.right - 5, currentY + 8, {
+    doc.text('Monatliche Vorauszahlung für Betriebskosten:', config.margin.left + 10, currentY + 10);
+    doc.text(formatCurrency(vorauszahlung), pageWidth - config.margin.right - 10, currentY + 10, {
       align: 'right',
     });
-    currentY += 17;
+    currentY += 20;
   };
 
   // Unterschrifts-Bereich
