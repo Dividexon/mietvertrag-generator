@@ -26,7 +26,7 @@ export function Step8ZahlungMieterhoehung({
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§7 Fälligkeit - Bankverbindung</h2>
+          <h2>§8 Fälligkeit - Bankverbindung</h2>
         </div>
         <div className="card-content">
           <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>

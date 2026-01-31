@@ -55,6 +55,9 @@ function App() {
     updateMieter,
     toggleBetriebskosten,
     updateBetriebskostenSchluessel,
+    addSonstigeBetriebskosten,
+    removeSonstigeBetriebskosten,
+    updateSonstigeBetriebskosten,
     addStaffel,
     removeStaffel,
     updateStaffel,
@@ -234,6 +237,9 @@ function App() {
             vertrag={vertrag}
             toggleBetriebskosten={toggleBetriebskosten}
             updateBetriebskostenSchluessel={updateBetriebskostenSchluessel}
+            addSonstigeBetriebskosten={addSonstigeBetriebskosten}
+            removeSonstigeBetriebskosten={removeSonstigeBetriebskosten}
+            updateSonstigeBetriebskosten={updateSonstigeBetriebskosten}
             onNext={nextStep}
             onPrev={prevStep}
           />

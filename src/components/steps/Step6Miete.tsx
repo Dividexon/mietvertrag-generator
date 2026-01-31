@@ -48,11 +48,11 @@ export function Step6Miete({
 
   return (
     <>
-      {/* §4 Grundmiete */}
+      {/* §5 Grundmiete */}
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§4 Miete - Grundmiete</h2>
+          <h2>§5 Miete - Grundmiete</h2>
         </div>
         <div className="card-content">
           <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>
@@ -196,11 +196,11 @@ export function Step6Miete({
         </div>
       </div>
 
-      {/* §5 Mieterhöhung */}
+      {/* §6 Mieterhöhung */}
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§5 Mieterhöhung</h2>
+          <h2>§6 Mieterhöhung</h2>
         </div>
         <div className="card-content">
           <div className="form-group">
@@ -243,7 +243,7 @@ export function Step6Miete({
         <div className="card">
           <div className="card-header">
             <div className="accent-bar" />
-            <h2>§5 Staffelmiete</h2>
+            <h2>§6 Staffelmiete</h2>
           </div>
           <div className="card-content">
             <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
@@ -321,7 +321,7 @@ export function Step6Miete({
         <div className="card">
           <div className="card-header">
             <div className="accent-bar" />
-            <h2>§5 Indexmiete</h2>
+            <h2>§6 Indexmiete</h2>
           </div>
           <div className="card-content">
             <div style={{ 

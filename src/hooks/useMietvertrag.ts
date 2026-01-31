@@ -259,6 +259,42 @@ export function useMietvertrag() {
     }));
   }, []);
 
+  // Sonstige Betriebskosten management
+  const addSonstigeBetriebskosten = useCallback(() => {
+    setVertrag(prev => ({
+      ...prev,
+      betriebskosten: {
+        ...prev.betriebskosten,
+        sonstige: [...prev.betriebskosten.sonstige, { bezeichnung: '', schluessel: '1' }],
+      },
+    }));
+  }, []);
+
+  const removeSonstigeBetriebskosten = useCallback((index: number) => {
+    setVertrag(prev => ({
+      ...prev,
+      betriebskosten: {
+        ...prev.betriebskosten,
+        sonstige: prev.betriebskosten.sonstige.filter((_, i) => i !== index),
+      },
+    }));
+  }, []);
+
+  const updateSonstigeBetriebskosten = useCallback((
+    index: number, 
+    data: { bezeichnung?: string; schluessel?: string }
+  ) => {
+    setVertrag(prev => ({
+      ...prev,
+      betriebskosten: {
+        ...prev.betriebskosten,
+        sonstige: prev.betriebskosten.sonstige.map((s, i) => 
+          i === index ? { ...s, ...data } : s
+        ),
+      },
+    }));
+  }, []);
+
   // Staffelmiete management
   const addStaffel = useCallback(() => {
     setVertrag(prev => {
@@ -359,6 +395,9 @@ export function useMietvertrag() {
     updateMieter,
     toggleBetriebskosten,
     updateBetriebskostenSchluessel,
+    addSonstigeBetriebskosten,
+    removeSonstigeBetriebskosten,
+    updateSonstigeBetriebskosten,
     addStaffel,
     removeStaffel,
     updateStaffel,

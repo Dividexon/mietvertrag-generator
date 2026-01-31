@@ -27,7 +27,7 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§8 Heizung</h2>
+          <h2>§9 Heizung</h2>
         </div>
         <div className="card-content">
           <div className="form-group">
@@ -93,7 +93,7 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§13 Kleinreparaturen</h2>
+          <h2>§14 Kleinreparaturen</h2>
         </div>
         <div className="card-content">
           <label className={`checkbox-item ${kleinreparaturen.aktiv ? 'checked' : ''}`} style={{ marginBottom: '16px' }}>
@@ -153,7 +153,7 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§14 Schönheitsreparaturen</h2>
+          <h2>§15 Schönheitsreparaturen</h2>
         </div>
         <div className="card-content">
           <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
@@ -225,7 +225,7 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§20 Sonstige Vereinbarungen</h2>
+          <h2>§21 Sonstige Vereinbarungen</h2>
         </div>
         <div className="card-content">
           <div className="form-group">

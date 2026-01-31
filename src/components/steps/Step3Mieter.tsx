@@ -24,7 +24,7 @@ export function Step3Mieter({ vertrag, addMieter, removeMieter, updateMieter, on
         <div className="card-content">
           <p style={{ color: 'var(--text-secondary)', marginBottom: '8px' }}>
             Ein Mietvertrag kann bis zu <strong>3 Personen</strong> als Mieter (Gesamtschuldner) enthalten.
-            Bei mehreren Mietern gilt automatisch §18 (Personenmehrheit als Mieter).
+            Bei mehreren Mietern gilt automatisch §19 (Personenmehrheit als Mieter).
           </p>
         </div>
       </div>
