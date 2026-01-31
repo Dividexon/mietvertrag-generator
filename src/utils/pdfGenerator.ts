@@ -223,18 +223,24 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     doc.setFontSize(config.fontSize.normal);
     setColor(config.colors.text);
 
+    // Text vorbereiten um Höhe zu berechnen
+    doc.setFont('helvetica', 'normal');
+    const numWidth = doc.getTextWidth(num) + 2;
+    const maxWidth = contentWidth - indent - numWidth;
+    const lines = doc.splitTextToSize(text, maxWidth);
+    
+    // Mindestens 2 Zeilen oder alle Zeilen auf einer Seite halten
+    const minLines = Math.min(lines.length, 2);
+    checkPageBreak(config.lineHeight * minLines);
+
     // Nummer in Bold
     doc.setFont('helvetica', 'bold');
     doc.text(num, config.margin.left + indent, currentY);
 
     // Text normal
     doc.setFont('helvetica', 'normal');
-    const numWidth = doc.getTextWidth(num) + 2;
-    const maxWidth = contentWidth - indent - numWidth;
-    const lines = doc.splitTextToSize(text, maxWidth);
-
     for (let i = 0; i < lines.length; i++) {
-      checkPageBreak(config.lineHeight);
+      if (i > 0) checkPageBreak(config.lineHeight);
       doc.text(lines[i], config.margin.left + indent + numWidth, currentY);
       currentY += config.lineHeight;
     }
