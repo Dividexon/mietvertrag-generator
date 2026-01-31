@@ -145,7 +145,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     // Titel
     doc.setFontSize(config.fontSize.title + 4);
     doc.setFont('helvetica', 'bold');
-    setColor(config.colors.accent);
+    setColor(config.colors.text);
     doc.text('MIETVERTRAG', pageWidth / 2, 18, { align: 'center' });
 
     // Untertitel
@@ -179,7 +179,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     // Paragraph-Nummer und Titel
     doc.setFontSize(config.fontSize.heading);
     doc.setFont('helvetica', 'bold');
-    setColor(config.colors.primary);
+    setColor(config.colors.text);
     doc.text(`${paragraphNum} ${title}`, config.margin.left + 8, currentY + 2);
 
     currentY += 8;
@@ -198,7 +198,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
 
     doc.setFontSize(config.fontSize.subheading);
     doc.setFont('helvetica', 'bold');
-    setColor(config.colors.accent);
+    setColor(config.colors.text);
     doc.text(title, config.margin.left + 5, currentY);
 
     currentY += 5;
@@ -1117,7 +1117,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   doc.rect(0, 0, pageWidth, 3, 'F');
   doc.setFontSize(config.fontSize.heading + 2);
   doc.setFont('helvetica', 'bold');
-  setColor(config.colors.accent);
+  setColor(config.colors.text);
   doc.text('Datenschutzhinweise und Datenschutzinformationen', pageWidth / 2, 15, { align: 'center' });
   setColor(config.colors.line, 'draw');
   doc.setLineWidth(0.5);
@@ -1193,7 +1193,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   doc.rect(0, 0, pageWidth, 3, 'F');
   doc.setFontSize(config.fontSize.heading + 2);
   doc.setFont('helvetica', 'bold');
-  setColor(config.colors.accent);
+  setColor(config.colors.text);
   doc.text('HAUSORDNUNG', pageWidth / 2, 15, { align: 'center' });
   setColor(config.colors.line, 'draw');
   doc.setLineWidth(0.5);
