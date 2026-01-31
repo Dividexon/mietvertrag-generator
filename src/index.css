@@ -1318,6 +1318,24 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   flex: 1;
 }
 
+/* Mobile: Nur Icons, linksbündig */
+@media (max-width: 768px) {
+  .vertrag-actions {
+    justify-content: flex-start;
+  }
+  
+  .vertrag-action-btn.edit,
+  .vertrag-action-btn.duplicate,
+  .vertrag-action-btn.delete {
+    flex: 0;
+    padding: 10px 12px;
+  }
+  
+  .vertrag-action-btn .btn-text {
+    display: none;
+  }
+}
+
 .vertrag-action-btn.edit {
   background: var(--accent);
   color: white;

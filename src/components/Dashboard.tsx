@@ -168,9 +168,10 @@ export function Dashboard({ onCreateNew, onEdit, onDuplicate, onSettings }: Prop
                   <button 
                     className="vertrag-action-btn edit"
                     onClick={() => onEdit(vertrag.id)}
+                    title="Bearbeiten"
                   >
                     <MdEdit size={18} />
-                    Bearbeiten
+                    <span className="btn-text">Bearbeiten</span>
                   </button>
                   <button 
                     className="vertrag-action-btn duplicate"
@@ -178,16 +179,18 @@ export function Dashboard({ onCreateNew, onEdit, onDuplicate, onSettings }: Prop
                       setVertragName(`${vertrag.bezeichnung} (Kopie)`);
                       setShowNameModal({ mode: 'duplicate', id: vertrag.id });
                     }}
+                    title="Duplizieren"
                   >
                     <MdContentCopy size={18} />
-                    Duplizieren
+                    <span className="btn-text">Duplizieren</span>
                   </button>
                   <button 
                     className="vertrag-action-btn delete"
                     onClick={() => setDeleteConfirm(vertrag.id)}
+                    title="Löschen"
                   >
                     <MdDelete size={18} />
-                    Löschen
+                    <span className="btn-text">Löschen</span>
                   </button>
                 </div>
 
