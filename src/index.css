@@ -1633,3 +1633,503 @@ select {
   color: var(--text-muted);
   margin-top: 4px;
 }
+
+/* ===== SIGNATURE PAD ===== */
+.signature-pad-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 2000;
+}
+
+.signature-pad-container {
+  background: var(--bg-card);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  padding: 24px;
+}
+
+.signature-pad-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.signature-pad-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.signature-pad-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.signature-pad-canvas-wrapper {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.signature-pad-canvas {
+  width: 100%;
+  height: 200px;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.signature-pad-line {
+  position: absolute;
+  bottom: 40px;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: #ccc;
+}
+
+.signature-pad-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.signature-pad-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.signature-pad-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.signature-pad-btn.clear {
+  background: var(--bg-input);
+  color: var(--text-secondary);
+}
+
+.signature-pad-btn.clear:hover {
+  background: var(--error);
+  color: white;
+}
+
+.signature-pad-btn.save {
+  background: var(--accent);
+  color: white;
+}
+
+.signature-pad-btn.save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.signature-pad-btn.save:not(:disabled):hover {
+  background: var(--accent-dark);
+}
+
+/* ===== CONTRACT PREVIEW ===== */
+.preview-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1500;
+  overflow-y: auto;
+}
+
+.preview-modal {
+  background: var(--bg-card);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+  border-radius: 20px 20px 0 0;
+  z-index: 10;
+}
+
+.preview-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.preview-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.preview-header-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.preview-header-btn:hover {
+  background: var(--accent-dark);
+}
+
+.preview-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.preview-close:hover {
+  background: var(--error);
+  color: white;
+}
+
+.preview-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.preview-title {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.preview-title h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.preview-title p {
+  color: var(--text-secondary);
+}
+
+.preview-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.preview-section:last-child {
+  border-bottom: none;
+}
+
+.preview-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.preview-section p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.preview-parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.preview-party {
+  background: var(--bg-input);
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.preview-party-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.preview-party-name {
+  font-weight: 600;
+  margin: 8px 0 4px !important;
+}
+
+.preview-party-address {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.preview-miete {
+  background: var(--bg-input);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.preview-miete-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.preview-miete-row:last-child {
+  border-bottom: none;
+}
+
+.preview-miete-row.total {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+
+.preview-date {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 1.1rem;
+}
+
+.preview-signatures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.preview-signature-box {
+  text-align: center;
+}
+
+.preview-signature-area {
+  height: 100px;
+  background: white;
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  overflow: hidden;
+}
+
+.preview-signature-area:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.preview-signature-area img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.preview-signature-placeholder {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.preview-signature-line {
+  height: 1px;
+  background: var(--text-primary);
+  margin: 12px 0 8px;
+}
+
+.preview-signature-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Signature Select Modal */
+.signature-select-modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border-radius: 20px;
+}
+
+.signature-select-content {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.signature-select-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.signature-select-content h4 {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.signature-select-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.signature-select-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-input);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.signature-select-item:hover {
+  border-color: var(--accent);
+}
+
+.signature-select-item img {
+  width: 80px;
+  height: 40px;
+  object-fit: contain;
+  background: white;
+  border-radius: 6px;
+}
+
+.signature-select-item span {
+  font-weight: 500;
+}
+
+.signature-select-new {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.signature-select-new:hover {
+  background: var(--accent-dark);
+}
+
+.signature-select-cancel {
+  width: 100%;
+  padding: 14px;
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.signature-save-template {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 2001;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.signature-save-template label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.signature-save-template input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+}
+
+.signature-template-name {
+  padding: 10px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .preview-parties {
+    grid-template-columns: 1fr;
+  }
+  
+  .preview-signatures {
+    grid-template-columns: 1fr;
+  }
+}

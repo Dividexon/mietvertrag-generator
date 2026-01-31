@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MdChevronLeft, MdPictureAsPdf, MdEdit, MdWarning, MdSave, MdCheck } from 'react-icons/md';
+import { MdChevronLeft, MdPictureAsPdf, MdEdit, MdWarning, MdSave, MdCheck, MdVisibility } from 'react-icons/md';
 import type { Mietvertrag } from '../../types';
 import { KAUTION_ZAHLUNGSART_OPTIONS } from '../../types';
 import { generateMietvertragPDF } from '../../utils/pdfGenerator';
@@ -10,9 +10,10 @@ interface Props {
   goToStep: (step: number) => void;
   onPrev: () => void;
   onSave?: () => void;
+  onPreview?: () => void;
 }
 
-export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev, onSave }: Props) {
+export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev, onSave, onPreview }: Props) {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved'>('idle');
   const { vermieter, mieter, mietobjekt, mietzeit, miete, kaution, unterschriften } = vertrag;
   
@@ -228,16 +229,29 @@ export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev, onSa
 
       {/* Action Buttons */}
       <div className="nav-buttons" style={{ flexDirection: 'column', gap: '12px' }}>
-        {/* Save Button */}
+        {/* Preview & Sign Button */}
         <button 
           className="btn btn-primary" 
+          onClick={onPreview}
+          style={{ background: 'var(--accent)' }}
+        >
+          <MdVisibility size={20} />
+          Vorschau & Unterschreiben
+        </button>
+
+        {/* Save Button */}
+        <button 
+          className="btn btn-secondary" 
           onClick={() => {
             onSave?.();
             setSaveStatus('saved');
             setTimeout(() => setSaveStatus('idle'), 2000);
           }}
           style={{ 
-            background: saveStatus === 'saved' ? 'var(--success)' : 'var(--accent)',
+            width: '100%',
+            background: saveStatus === 'saved' ? 'var(--success)' : undefined,
+            borderColor: saveStatus === 'saved' ? 'var(--success)' : undefined,
+            color: saveStatus === 'saved' ? 'white' : undefined,
           }}
         >
           {saveStatus === 'saved' ? <MdCheck size={20} /> : <MdSave size={20} />}

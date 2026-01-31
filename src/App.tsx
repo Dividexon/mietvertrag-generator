@@ -5,6 +5,7 @@ import { ProgressBar } from './components/ProgressBar';
 import { Dashboard } from './components/Dashboard';
 import { VertragSelector } from './components/VertragSelector';
 import { SettingsModal } from './components/SettingsModal';
+import { ContractPreview, type SavedSignature } from './components/ContractPreview';
 import {
   Step1Vertragsart,
   Step2Vermieter,
@@ -22,14 +23,26 @@ import { useMietvertrag } from './hooks/useMietvertrag';
 import { saveVertrag, getVertrag } from './services/storage';
 import './index.css';
 
+const SIGNATURES_STORAGE_KEY = 'saved_signatures';
+
 type View = 'dashboard' | 'editor';
 
 function App() {
   const { mode, setMode } = useTheme();
   const [currentView, setCurrentView] = useState<View>('dashboard');
   const [showSettings, setShowSettings] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [savedSignatures, setSavedSignatures] = useState<SavedSignature[]>([]);
   const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Load saved signatures from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem(SIGNATURES_STORAGE_KEY);
+    if (stored) {
+      setSavedSignatures(JSON.parse(stored));
+    }
+  }, []);
   
   const {
     vertrag,
@@ -108,6 +121,30 @@ function App() {
 
   const handleClearAll = () => {
     localStorage.removeItem('mietvertraege');
+  };
+
+  // Signature handlers
+  const handleUpdateSignature = (type: 'vermieter' | 'mieter', index: number, signature: string) => {
+    if (type === 'vermieter') {
+      updateVertrag('unterschriften', { vermieterSignatur: signature });
+    } else {
+      const currentSignatures = vertrag.unterschriften.mieterSignaturen || [];
+      const newSignatures = [...currentSignatures];
+      newSignatures[index] = signature;
+      updateVertrag('unterschriften', { mieterSignaturen: newSignatures });
+    }
+  };
+
+  const handleSaveSignatureTemplate = (name: string, signature: string) => {
+    const newSignature: SavedSignature = {
+      id: crypto.randomUUID(),
+      name,
+      signature,
+      createdAt: new Date().toISOString(),
+    };
+    const updated = [...savedSignatures, newSignature];
+    setSavedSignatures(updated);
+    localStorage.setItem(SIGNATURES_STORAGE_KEY, JSON.stringify(updated));
   };
 
   // Get current vertrag info for selector
@@ -224,6 +261,7 @@ function App() {
             goToStep={goToStep}
             onPrev={prevStep}
             onSave={handleSave}
+            onPreview={() => setShowPreview(true)}
           />
         );
       default:
@@ -307,6 +345,17 @@ function App() {
         setMode={setMode}
         onClearAll={handleClearAll}
       />
+
+      {/* Contract Preview */}
+      {showPreview && (
+        <ContractPreview
+          vertrag={vertrag}
+          onClose={() => setShowPreview(false)}
+          onUpdateSignature={handleUpdateSignature}
+          savedSignatures={savedSignatures}
+          onSaveSignatureTemplate={handleSaveSignatureTemplate}
+        />
+      )}
     </div>
   );
 }
