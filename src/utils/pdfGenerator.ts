@@ -407,8 +407,8 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
         textColor: hexToRgb(config.colors.text), // Schwarz
       },
       columnStyles: {
-        0: { cellWidth: 95 },
-        1: { cellWidth: 55, halign: 'right' },
+        0: { cellWidth: 110 },
+        1: { cellWidth: 60, halign: 'right' },
       },
       alternateRowStyles: {
         fillColor: hexToRgb(config.colors.tableAlt),
