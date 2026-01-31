@@ -831,18 +831,15 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
 
   // Legende
   addSpace(3);
-  doc.setFontSize(config.fontSize.tiny);
-  setColor(config.colors.textLight);
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(config.fontSize.tiny);
+  doc.setFontSize(config.fontSize.small);
   setColor(config.colors.textLight);
   doc.setFont('helvetica', 'italic');
   const legende1 = 'Verteilerschlüssel: 1 = Wohnfläche, 2 = Personen, 3 = Einheiten, 4 = Verbrauch, 5 = Heizkostenverordnung,';
   const legende2 = '6 = Miteigentumsanteile, 7 = Bescheid, 8 = direkt Mieter/Versorger, 9 = Eigenleistung Mieter';
   doc.text(legende1, config.margin.left, currentY);
-  currentY += 4;
-  doc.text(legende2, config.margin.left, currentY);
   currentY += 5;
+  doc.text(legende2, config.margin.left, currentY);
+  currentY += 6;
 
   // Nummerierte Regelungen
   addSpace(5);
