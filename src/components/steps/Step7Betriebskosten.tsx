@@ -8,7 +8,7 @@ interface Props {
   updateBetriebskostenSchluessel: (key: keyof Omit<Betriebskosten, 'sonstige'>, schluessel: string) => void;
   addSonstigeBetriebskosten: () => void;
   removeSonstigeBetriebskosten: (index: number) => void;
-  updateSonstigeBetriebskosten: (index: number, data: { bezeichnung?: string; schluessel?: string }) => void;
+  updateSonstigeBetriebskosten: (index: number, data: { bezeichnung?: string; schluessel?: Abrechnungsschluessel }) => void;
   onNext: () => void;
   onPrev: () => void;
 }
@@ -160,7 +160,7 @@ export function Step7Betriebskosten({
               />
               <select
                 value={item.schluessel}
-                onChange={(e) => updateSonstigeBetriebskosten(index, { schluessel: e.target.value })}
+                onChange={(e) => updateSonstigeBetriebskosten(index, { schluessel: e.target.value as Abrechnungsschluessel })}
                 style={{
                   padding: '6px 10px',
                   borderRadius: '8px',

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import type { Mietvertrag, Mieter, BetriebskostenPosition, Betriebskosten } from '../types';
+import type { Mietvertrag, Mieter, BetriebskostenPosition, Betriebskosten, Abrechnungsschluessel } from '../types';
 
 const createDefaultBKPosition = (): BetriebskostenPosition => ({
   aktiv: false,
@@ -282,7 +282,7 @@ export function useMietvertrag() {
 
   const updateSonstigeBetriebskosten = useCallback((
     index: number, 
-    data: { bezeichnung?: string; schluessel?: string }
+    data: { bezeichnung?: string; schluessel?: Abrechnungsschluessel }
   ) => {
     setVertrag(prev => ({
       ...prev,

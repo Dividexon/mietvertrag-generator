@@ -1,6 +1,5 @@
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import type { Mietvertrag } from '../../types';
-import { GESCHOSS_OPTIONS } from '../../types';
 
 interface Props {
   vertrag: Mietvertrag;
