@@ -1294,28 +1294,43 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   const hoLeftX = config.margin.left;
   const hoRightX = config.margin.left + hoColWidth + 20;
 
-  // Hilfsfunktion für Unterschriftsfeld
-  const addHOSignature = (label: string, name: string, x: number, width: number) => {
+  // Hilfsfunktion für Unterschriftsfeld mit optionalem Signatur-Bild
+  const addHOSignature = (label: string, name: string, x: number, width: number, signatureData?: string) => {
+    let sigY = currentY;
+    
+    // Signatur-Bild einfügen falls vorhanden
+    if (signatureData && signatureData.startsWith('data:image')) {
+      try {
+        const format = signatureData.includes('image/png') ? 'PNG' : 'JPEG';
+        doc.addImage(signatureData, format, x, sigY - 15, 50, 15);
+      } catch (e) {
+        console.warn('Signatur konnte nicht eingefügt werden:', e);
+      }
+    }
+    
+    // Unterschriftslinie
     doc.setLineWidth(0.5);
     setColor(config.colors.text, 'draw');
-    doc.line(x, currentY, x + width, currentY);
+    doc.line(x, sigY, x + width, sigY);
+    
+    // Label und Name
     doc.setFontSize(config.fontSize.small);
     setColor(config.colors.textLight);
-    doc.text(label, x, currentY + 4);
+    doc.text(label, x, sigY + 4);
     doc.setFont('helvetica', 'bold');
     setColor(config.colors.text);
-    doc.text(name, x, currentY + 8);
+    doc.text(name, x, sigY + 8);
   };
 
   // Zeile 1: Vermieter links | Mieter 1 rechts
   const row1Y = currentY;
-  addHOSignature('Vermieter', vermieter.name || '—', hoLeftX, hoColWidth);
+  addHOSignature('Vermieter', vermieter.name || '—', hoLeftX, hoColWidth, unterschriften.vermieterSignatur);
   
   if (vertrag.mieter.length > 0) {
     currentY = row1Y;
     const m0 = vertrag.mieter[0];
     const m0Label = vertrag.mieter.length > 1 ? 'Mieter 1' : 'Mieter';
-    addHOSignature(m0Label, `${m0.vorname} ${m0.nachname}`, hoRightX, hoColWidth);
+    addHOSignature(m0Label, `${m0.vorname} ${m0.nachname}`, hoRightX, hoColWidth, unterschriften.mieterSignaturen?.[0]);
   }
   currentY = row1Y + 15;
 
@@ -1323,12 +1338,12 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   if (vertrag.mieter.length > 1) {
     const row2Y = currentY;
     const m1 = vertrag.mieter[1];
-    addHOSignature('Mieter 2', `${m1.vorname} ${m1.nachname}`, hoLeftX, hoColWidth);
+    addHOSignature('Mieter 2', `${m1.vorname} ${m1.nachname}`, hoLeftX, hoColWidth, unterschriften.mieterSignaturen?.[1]);
     
     if (vertrag.mieter.length > 2) {
       currentY = row2Y;
       const m2 = vertrag.mieter[2];
-      addHOSignature('Mieter 3', `${m2.vorname} ${m2.nachname}`, hoRightX, hoColWidth);
+      addHOSignature('Mieter 3', `${m2.vorname} ${m2.nachname}`, hoRightX, hoColWidth, unterschriften.mieterSignaturen?.[2]);
     }
     currentY = row2Y + 15;
   }
