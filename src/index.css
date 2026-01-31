@@ -2105,40 +2105,43 @@ select {
   cursor: pointer;
 }
 
-.signature-save-template {
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--bg-card);
-  padding: 16px 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  z-index: 2001;
+/* Template Section inside SignaturePad */
+.signature-template-section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
-.signature-save-template label {
+.signature-template-checkbox {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 0.95rem;
   cursor: pointer;
+  color: var(--text-primary);
 }
 
-.signature-save-template input[type="checkbox"] {
+.signature-template-checkbox input[type="checkbox"] {
   width: 20px;
   height: 20px;
   accent-color: var(--accent);
+  cursor: pointer;
 }
 
-.signature-template-name {
-  padding: 10px 14px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+.signature-template-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
   font-size: 0.95rem;
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+.signature-template-input:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 @media (max-width: 640px) {

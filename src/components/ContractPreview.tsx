@@ -34,8 +34,6 @@ export function ContractPreview({
     type: 'vermieter' | 'mieter';
     index: number;
   } | null>(null);
-  const [saveAsTemplate, setSaveAsTemplate] = useState(false);
-  const [templateName, setTemplateName] = useState('');
 
   const { vermieter, mieter, mietobjekt, mietzeit, miete, kaution, unterschriften } = vertrag;
 
@@ -48,7 +46,7 @@ export function ContractPreview({
     return amount.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
   };
 
-  const handleSignatureComplete = (signature: string) => {
+  const handleSignatureComplete = (signature: string, saveAsTemplate: boolean, templateName: string) => {
     if (!showSignaturePad) return;
     
     onUpdateSignature(showSignaturePad.type, showSignaturePad.index, signature);
@@ -58,8 +56,6 @@ export function ContractPreview({
     }
     
     setShowSignaturePad(null);
-    setSaveAsTemplate(false);
-    setTemplateName('');
   };
 
   const handleUseSavedSignature = (signature: string) => {
@@ -277,35 +273,11 @@ export function ContractPreview({
 
         {/* Signature Pad Modal */}
         {showSignaturePad && (
-          <>
-            <SignaturePad
-              onSave={handleSignatureComplete}
-              onCancel={() => {
-                setShowSignaturePad(null);
-                setSaveAsTemplate(false);
-                setTemplateName('');
-              }}
-            />
-            <div className="signature-save-template">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={saveAsTemplate}
-                  onChange={e => setSaveAsTemplate(e.target.checked)}
-                />
-                Als Vorlage speichern
-              </label>
-              {saveAsTemplate && (
-                <input
-                  type="text"
-                  placeholder="Name der Unterschrift"
-                  value={templateName}
-                  onChange={e => setTemplateName(e.target.value)}
-                  className="signature-template-name"
-                />
-              )}
-            </div>
-          </>
+          <SignaturePad
+            onSave={handleSignatureComplete}
+            onCancel={() => setShowSignaturePad(null)}
+            showSaveAsTemplate={true}
+          />
         )}
       </div>
     </div>

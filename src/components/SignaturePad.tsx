@@ -2,17 +2,20 @@ import { useRef, useEffect, useState } from 'react';
 import { MdDelete, MdCheck, MdClose, MdUpload } from 'react-icons/md';
 
 interface Props {
-  onSave: (signatureData: string) => void;
+  onSave: (signatureData: string, saveAsTemplate: boolean, templateName: string) => void;
   onCancel: () => void;
   initialSignature?: string;
+  showSaveAsTemplate?: boolean;
 }
 
-export function SignaturePad({ onSave, onCancel, initialSignature }: Props) {
+export function SignaturePad({ onSave, onCancel, initialSignature, showSaveAsTemplate = true }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasDrawn, setHasDrawn] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [saveAsTemplate, setSaveAsTemplate] = useState(false);
+  const [templateName, setTemplateName] = useState('');
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -125,7 +128,7 @@ export function SignaturePad({ onSave, onCancel, initialSignature }: Props) {
     if (!canvas || !hasDrawn) return;
 
     const signatureData = canvas.toDataURL('image/png');
-    onSave(signatureData);
+    onSave(signatureData, saveAsTemplate, templateName);
   };
 
   // Drag & Drop handlers
@@ -205,6 +208,29 @@ export function SignaturePad({ onSave, onCancel, initialSignature }: Props) {
             {isDragOver ? 'Bild hier ablegen' : 'Hier unterschreiben oder Bild ablegen'}
           </span>
         </div>
+
+        {/* Save as Template */}
+        {showSaveAsTemplate && (
+          <div className="signature-template-section">
+            <label className="signature-template-checkbox">
+              <input
+                type="checkbox"
+                checked={saveAsTemplate}
+                onChange={e => setSaveAsTemplate(e.target.checked)}
+              />
+              Als Vorlage speichern
+            </label>
+            {saveAsTemplate && (
+              <input
+                type="text"
+                placeholder="Name der Unterschrift (z.B. Marius)"
+                value={templateName}
+                onChange={e => setTemplateName(e.target.value)}
+                className="signature-template-input"
+              />
+            )}
+          </div>
+        )}
 
         {/* Hidden file input */}
         <input
