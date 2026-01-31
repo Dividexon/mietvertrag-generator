@@ -56,13 +56,13 @@ const createDefaultMietvertrag = (): Mietvertrag => ({
   
   vermieter: {
     typ: 'person',
-    name: 'Marius Schumacher',
+    name: '',
     strasse: '',
     plz: '',
-    ort: 'Bremen',
+    ort: '',
     vertreter: '',
     telefon: '',
-    email: 'schumacherimmobilie@gmail.com',
+    email: '',
   },
   
   mieter: [createDefaultMieter()],
@@ -72,7 +72,7 @@ const createDefaultMietvertrag = (): Mietvertrag => ({
     hausnummer: '',
     wohnungsnummer: '',
     plz: '',
-    ort: 'Bremen',
+    ort: '',
     geschoss: '',
     lage: '',
     zimmeranzahl: 0,
@@ -133,7 +133,7 @@ const createDefaultMietvertrag = (): Mietvertrag => ({
   bankverbindung: {
     iban: '',
     bic: '',
-    kontoinhaber: 'Marius Schumacher',
+    kontoinhaber: '',
   },
   
   heizung: {

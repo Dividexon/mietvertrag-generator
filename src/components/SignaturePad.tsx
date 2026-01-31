@@ -223,7 +223,7 @@ export function SignaturePad({ onSave, onCancel, initialSignature, showSaveAsTem
             {saveAsTemplate && (
               <input
                 type="text"
-                placeholder="Name der Unterschrift (z.B. Marius)"
+                placeholder="Name der Unterschrift (z.B. Max Mustermann)"
                 value={templateName}
                 onChange={e => setTemplateName(e.target.value)}
                 className="signature-template-input"
