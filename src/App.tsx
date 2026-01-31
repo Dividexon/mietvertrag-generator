@@ -221,6 +221,9 @@ function App() {
           <Step6Miete
             vertrag={vertrag}
             updateVertrag={updateVertrag}
+            addStaffel={addStaffel}
+            removeStaffel={removeStaffel}
+            updateStaffel={updateStaffel}
             onNext={nextStep}
             onPrev={prevStep}
           />
@@ -240,9 +243,6 @@ function App() {
           <Step8ZahlungMieterhoehung
             vertrag={vertrag}
             updateVertrag={updateVertrag}
-            addStaffel={addStaffel}
-            removeStaffel={removeStaffel}
-            updateStaffel={updateStaffel}
             onNext={nextStep}
             onPrev={prevStep}
           />

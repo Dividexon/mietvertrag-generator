@@ -27,7 +27,7 @@ export function Step7Betriebskosten({
       <div className="card">
         <div className="card-header">
           <div className="accent-bar" />
-          <h2>§5.2 Betriebskosten</h2>
+          <h2>§7 Betriebskosten</h2>
         </div>
         <div className="card-content">
           <p style={{ color: 'var(--text-secondary)', marginBottom: '8px' }}>
@@ -55,7 +55,8 @@ export function Step7Betriebskosten({
                 <div 
                   key={key}
                   style={{
-                    display: 'flex',
+                    display: 'grid',
+                    gridTemplateColumns: '24px 1fr 220px',
                     alignItems: 'center',
                     gap: '12px',
                     padding: '12px 16px',
@@ -77,32 +78,33 @@ export function Step7Betriebskosten({
                     }}
                   />
                   <span style={{ 
-                    flex: 1, 
                     fontSize: '0.95rem',
                     color: bk.aktiv ? 'var(--text-primary)' : 'var(--text-secondary)',
                   }}>
                     {label}
                   </span>
-                  {bk.aktiv && (
-                    <select
-                      value={bk.schluessel}
-                      onChange={(e) => updateBetriebskostenSchluessel(key, e.target.value as Abrechnungsschluessel)}
-                      style={{
-                        padding: '6px 10px',
-                        borderRadius: '8px',
-                        border: '1px solid var(--border-color)',
-                        background: 'var(--bg-secondary)',
-                        color: 'var(--text-primary)',
-                        fontSize: '0.85rem',
-                        minWidth: '180px',
-                      }}
-                    >
-                      <option value="">Schlüssel wählen</option>
-                      {Object.entries(ABRECHNUNGSSCHLUESSEL_LABELS).map(([value, text]) => (
-                        <option key={value} value={value}>{value} - {text}</option>
-                      ))}
-                    </select>
-                  )}
+                  <select
+                    value={bk.schluessel}
+                    onChange={(e) => updateBetriebskostenSchluessel(key, e.target.value as Abrechnungsschluessel)}
+                    disabled={!bk.aktiv}
+                    style={{
+                      padding: '6px 10px',
+                      borderRadius: '8px',
+                      border: '1px solid var(--border-color)',
+                      background: bk.aktiv ? 'var(--bg-secondary)' : 'var(--bg-input)',
+                      color: bk.aktiv ? 'var(--text-primary)' : 'var(--text-muted)',
+                      fontSize: '0.85rem',
+                      textAlign: 'center',
+                      textAlignLast: 'center',
+                      opacity: bk.aktiv ? 1 : 0.5,
+                      cursor: bk.aktiv ? 'pointer' : 'not-allowed',
+                    }}
+                  >
+                    <option value="">Schlüssel wählen</option>
+                    {Object.entries(ABRECHNUNGSSCHLUESSEL_LABELS).map(([value, text]) => (
+                      <option key={value} value={value}>{value} - {text}</option>
+                    ))}
+                  </select>
                 </div>
               );
             })}

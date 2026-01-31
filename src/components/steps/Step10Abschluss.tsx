@@ -114,6 +114,7 @@ export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev, onSa
                 type="date"
                 value={unterschriften.datum}
                 onChange={(e) => updateVertrag('unterschriften', { datum: e.target.value })}
+                max="9999-12-31"
               />
             </div>
           </div>

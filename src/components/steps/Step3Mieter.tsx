@@ -73,6 +73,7 @@ export function Step3Mieter({ vertrag, addMieter, removeMieter, updateMieter, on
                 type="date"
                 value={m.geburtsdatum}
                 onChange={(e) => updateMieter(m.id, { geburtsdatum: e.target.value })}
+                max="9999-12-31"
               />
             </div>
             

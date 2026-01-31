@@ -164,28 +164,37 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
           <div className="form-group">
             <label>Zustand bei Übergabe</label>
             <div className="radio-group" style={{ flexDirection: 'column' }}>
-              <label className={`radio-item ${schoenheitsreparaturen.uebergabeRenoviert ? 'selected' : ''}`}>
+              <label className={`radio-item ${schoenheitsreparaturen.uebergabeZustand === 'renoviert' ? 'selected' : ''}`}>
                 <input
                   type="radio"
                   name="uebergabe"
-                  checked={schoenheitsreparaturen.uebergabeRenoviert}
-                  onChange={() => updateVertrag('schoenheitsreparaturen', { uebergabeRenoviert: true })}
+                  checked={schoenheitsreparaturen.uebergabeZustand === 'renoviert'}
+                  onChange={() => updateVertrag('schoenheitsreparaturen', { uebergabeZustand: 'renoviert' })}
                 />
                 <span>Renoviert / nicht renovierungsbedürftig übergeben</span>
               </label>
-              <label className={`radio-item ${!schoenheitsreparaturen.uebergabeRenoviert ? 'selected' : ''}`}>
+              <label className={`radio-item ${schoenheitsreparaturen.uebergabeZustand === 'unrenoviert' ? 'selected' : ''}`}>
                 <input
                   type="radio"
                   name="uebergabe"
-                  checked={!schoenheitsreparaturen.uebergabeRenoviert}
-                  onChange={() => updateVertrag('schoenheitsreparaturen', { uebergabeRenoviert: false })}
+                  checked={schoenheitsreparaturen.uebergabeZustand === 'unrenoviert'}
+                  onChange={() => updateVertrag('schoenheitsreparaturen', { uebergabeZustand: 'unrenoviert' })}
                 />
                 <span>Unrenoviert übergeben</span>
+              </label>
+              <label className={`radio-item ${schoenheitsreparaturen.uebergabeZustand === 'protokoll' ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="uebergabe"
+                  checked={schoenheitsreparaturen.uebergabeZustand === 'protokoll'}
+                  onChange={() => updateVertrag('schoenheitsreparaturen', { uebergabeZustand: 'protokoll' })}
+                />
+                <span>siehe Übergabeprotokoll</span>
               </label>
             </div>
           </div>
           
-          {schoenheitsreparaturen.uebergabeRenoviert && (
+          {schoenheitsreparaturen.uebergabeZustand === 'renoviert' && (
             <label className={`checkbox-item ${schoenheitsreparaturen.mieterPflicht ? 'checked' : ''}`} style={{ marginTop: '16px' }}>
               <input
                 type="checkbox"
@@ -196,9 +205,9 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
             </label>
           )}
           
-          {!schoenheitsreparaturen.uebergabeRenoviert && (
+          {schoenheitsreparaturen.uebergabeZustand === 'unrenoviert' && (
             <div style={{ 
-              marginTop: '16px', 
+              marginTop: '12px', 
               padding: '12px', 
               background: 'var(--warning)', 
               borderRadius: '12px',

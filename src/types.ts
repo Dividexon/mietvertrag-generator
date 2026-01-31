@@ -329,8 +329,10 @@ export interface Kleinreparaturen {
 // ============================================
 // SCHÖNHEITSREPARATUREN (§15)
 // ============================================
+export type UebergabeZustand = 'renoviert' | 'unrenoviert' | 'protokoll';
+
 export interface Schoenheitsreparaturen {
-  uebergabeRenoviert: boolean;
+  uebergabeZustand: UebergabeZustand;
   mieterPflicht: boolean;
 }
 

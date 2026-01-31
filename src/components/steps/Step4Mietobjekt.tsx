@@ -106,15 +106,12 @@ export function Step4Mietobjekt({ vertrag, updateVertrag, onNext, onPrev }: Prop
           <div className="form-row">
             <div className="form-group">
               <label>Geschoss *</label>
-              <select
+              <input
+                type="text"
                 value={mietobjekt.geschoss}
                 onChange={(e) => handleChange('geschoss', e.target.value)}
-              >
-                <option value="">Bitte wählen</option>
-                {GESCHOSS_OPTIONS.map(opt => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
+                placeholder="z.B. EG, 1. OG, Dachgeschoss"
+              />
             </div>
             <div className="form-group">
               <label>Lage im Geschoss</label>

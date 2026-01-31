@@ -151,7 +151,7 @@ const createDefaultMietvertrag = (): Mietvertrag => ({
   },
   
   schoenheitsreparaturen: {
-    uebergabeRenoviert: true,
+    uebergabeZustand: 'renoviert',
     mieterPflicht: true,
   },
   

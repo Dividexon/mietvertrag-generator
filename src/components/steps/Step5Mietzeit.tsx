@@ -29,6 +29,7 @@ export function Step5Mietzeit({ vertrag, updateVertrag, onNext, onPrev }: Props)
               type="date"
               value={mietzeit.mietbeginn}
               onChange={(e) => handleChange('mietbeginn', e.target.value)}
+              max="9999-12-31"
             />
           </div>
           
@@ -89,6 +90,7 @@ export function Step5Mietzeit({ vertrag, updateVertrag, onNext, onPrev }: Props)
                 type="date"
                 value={mietzeit.mietende || ''}
                 onChange={(e) => handleChange('mietende', e.target.value)}
+                max="9999-12-31"
               />
             </div>
             
