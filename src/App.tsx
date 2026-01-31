@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MdArrowBack, MdSave } from 'react-icons/md';
 import { ThemeToggle } from './components/ThemeToggle';
 import { ProgressBar } from './components/ProgressBar';
 import { Dashboard } from './components/Dashboard';
+import { VertragSelector } from './components/VertragSelector';
+import { SettingsModal } from './components/SettingsModal';
 import {
   Step1Vertragsart,
   Step2Vermieter,
@@ -25,7 +27,9 @@ type View = 'dashboard' | 'editor';
 function App() {
   const { mode, setMode } = useTheme();
   const [currentView, setCurrentView] = useState<View>('dashboard');
+  const [showSettings, setShowSettings] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   const {
     vertrag,
@@ -46,6 +50,31 @@ function App() {
     loadVertrag,
   } = useMietvertrag();
 
+  // Auto-save when vertrag changes (debounced)
+  useEffect(() => {
+    if (currentView !== 'editor') return;
+    
+    // Clear existing timer
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+    }
+    
+    // Set new timer for auto-save (2 seconds after last change)
+    autoSaveTimerRef.current = setTimeout(() => {
+      if (vertrag.vertragsart) {
+        saveVertrag(vertrag);
+        setSaveStatus('saved');
+        setTimeout(() => setSaveStatus('idle'), 1500);
+      }
+    }, 2000);
+    
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+      }
+    };
+  }, [vertrag, currentView]);
+
   // Navigation handlers
   const handleCreateNew = () => {
     resetVertrag();
@@ -61,6 +90,10 @@ function App() {
   };
 
   const handleBackToDashboard = () => {
+    // Save before leaving
+    if (vertrag.vertragsart) {
+      saveVertrag(vertrag);
+    }
     setCurrentView('dashboard');
   };
 
@@ -70,12 +103,29 @@ function App() {
     setTimeout(() => {
       setSaveStatus('saved');
       setTimeout(() => setSaveStatus('idle'), 2000);
-    }, 500);
+    }, 300);
   };
 
-  const handleSettings = () => {
-    // TODO: Settings modal
-    console.log('Settings clicked');
+  const handleClearAll = () => {
+    localStorage.removeItem('mietvertraege');
+  };
+
+  // Get current vertrag info for selector
+  const getVertragInfo = () => {
+    const { mietobjekt, vertragsart } = vertrag;
+    const art = vertragsart === 'wohnraum' ? 'Wohnung' :
+                vertragsart === 'gewerbe' ? 'Gewerbe' :
+                vertragsart === 'garage' ? 'Garage' : '';
+    
+    const bezeichnung = mietobjekt.strasse 
+      ? `${art} ${mietobjekt.strasse} ${mietobjekt.hausnummer}`.trim()
+      : 'Neuer Mietvertrag';
+    
+    const adresse = mietobjekt.strasse
+      ? `${mietobjekt.strasse} ${mietobjekt.hausnummer}, ${mietobjekt.plz} ${mietobjekt.ort}`
+      : 'Noch keine Adresse eingegeben';
+    
+    return { bezeichnung, adresse };
   };
 
   const renderStep = () => {
@@ -187,11 +237,18 @@ function App() {
         <Dashboard 
           onCreateNew={handleCreateNew}
           onEdit={handleEdit}
-          onSettings={handleSettings}
+          onSettings={() => setShowSettings(true)}
         />
         <div style={{ position: 'fixed', top: 16, right: 16, zIndex: 1000 }}>
           <ThemeToggle mode={mode} setMode={setMode} />
         </div>
+        <SettingsModal
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+          mode={mode}
+          setMode={setMode}
+          onClearAll={handleClearAll}
+        />
       </div>
     );
   }
@@ -221,8 +278,9 @@ function App() {
             onClick={handleSave}
             title="Speichern"
             style={{
-              background: saveStatus === 'saved' ? 'var(--success)' : undefined,
-              color: saveStatus === 'saved' ? 'white' : undefined,
+              background: saveStatus === 'saved' ? 'var(--success)' : 
+                         saveStatus === 'saving' ? 'var(--warning)' : undefined,
+              color: saveStatus !== 'idle' ? 'white' : undefined,
             }}
           >
             <MdSave size={20} />
@@ -231,11 +289,26 @@ function App() {
         </div>
       </header>
 
+      {/* Vertrag Selector */}
+      <VertragSelector
+        currentVertrag={getVertragInfo()}
+        onSelect={handleEdit}
+      />
+
       <ProgressBar currentStep={currentStep} vertragsart={vertrag.vertragsart} />
 
       <main className="main-content">
         {renderStep()}
       </main>
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        mode={mode}
+        setMode={setMode}
+        onClearAll={handleClearAll}
+      />
     </div>
   );
 }
