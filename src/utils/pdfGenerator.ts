@@ -1287,7 +1287,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   doc.setFont('helvetica', 'normal');
   setColor(config.colors.text);
   doc.text(`${unterschriften.ort || 'Bremen'}, den ${formatDate(unterschriften.datum)}`, config.margin.left, currentY);
-  currentY += 10;
+  currentY += 25; // Mehr Abstand für Unterschriften-Bilder
 
   // Spalten-Setup (wie im Mietvertrag)
   const hoColWidth = (contentWidth - 20) / 2;
@@ -1332,7 +1332,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
     const m0Label = vertrag.mieter.length > 1 ? 'Mieter 1' : 'Mieter';
     addHOSignature(m0Label, `${m0.vorname} ${m0.nachname}`, hoRightX, hoColWidth, unterschriften.mieterSignaturen?.[0]);
   }
-  currentY = row1Y + 15;
+  currentY = row1Y + 35; // Mehr Abstand für Unterschriften-Bilder der nächsten Zeile
 
   // Zeile 2: Mieter 2 links | Mieter 3 rechts (falls vorhanden)
   if (vertrag.mieter.length > 1) {
@@ -1345,7 +1345,7 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
       const m2 = vertrag.mieter[2];
       addHOSignature('Mieter 3', `${m2.vorname} ${m2.nachname}`, hoRightX, hoColWidth, unterschriften.mieterSignaturen?.[2]);
     }
-    currentY = row2Y + 15;
+    currentY = row2Y + 20;
   }
 
   addFooter();
