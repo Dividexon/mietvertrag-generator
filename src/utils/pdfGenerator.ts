@@ -117,6 +117,11 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
       doc.addPage();
       pageNumber++;
       currentY = config.margin.top;
+      
+      // Standard-Schrifteinstellungen nach Seitenumbruch wiederherstellen
+      doc.setFontSize(config.fontSize.normal);
+      doc.setFont('helvetica', 'normal');
+      setColor(config.colors.text);
     }
   };
 
