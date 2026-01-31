@@ -395,6 +395,8 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
       head: [['Betriebskostenart', 'Verteilerschlüssel']],
       body: tableData,
       theme: 'striped',
+      tableWidth: contentWidth,
+      showHead: 'everyPage',
       headStyles: {
         fillColor: hexToRgb(config.colors.tableHeader),
         textColor: [255, 255, 255],
