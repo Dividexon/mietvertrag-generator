@@ -1278,57 +1278,59 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   addNumberedItem('5.', 'Bei Eigenleistung (Kehrwoche): Genaue Zuweisung der Aufgaben (Erdgeschoss reinigt Eingang, obere Stockwerke Treppenabschnitte etc.).');
   addNumberedItem('6.', 'Winterdienst: Mieter des tiefsten Geschosses sind für Gehwegreinigung/Streuen zuständig, sofern vereinbart.');
 
-  // Unterschriften-Bereich
-  addSpace(10);
-  checkPageBreak(60);
+  // Unterschriften-Bereich (gleiches Layout wie Mietvertrag)
+  addSpace(8);
+  checkPageBreak(50);
   
-  // Ort / Datum
-  setColor(config.colors.text, 'draw');
-  doc.setLineWidth(0.5);
-  doc.line(config.margin.left, currentY, config.margin.left + 80, currentY);
-  currentY += 4;
-  doc.setFontSize(config.fontSize.small);
-  setColor(config.colors.textLight);
-  doc.text('Ort / Datum', config.margin.left, currentY);
-  currentY += 15;
-
-  // Vermieter Unterschrift
-  doc.setLineWidth(0.5);
-  setColor(config.colors.text, 'draw');
-  doc.line(config.margin.left, currentY, config.margin.left + 80, currentY);
-  currentY += 4;
-  doc.setFontSize(config.fontSize.small);
-  setColor(config.colors.textLight);
-  doc.text('Vermieter', config.margin.left, currentY);
+  // Ort und Datum (direkt eingetragen)
+  doc.setFontSize(config.fontSize.normal);
   doc.setFont('helvetica', 'normal');
   setColor(config.colors.text);
-  doc.text(vermieter.name || '', config.margin.left, currentY + 4);
-  currentY += 15;
+  doc.text(`${unterschriften.ort || 'Bremen'}, den ${formatDate(unterschriften.datum)}`, config.margin.left, currentY);
+  currentY += 10;
 
-  // Mieter Unterschriften
-  for (let i = 0; i < vertrag.mieter.length; i++) {
-    const m = vertrag.mieter[i];
-    checkPageBreak(25);
-    
-    // Linie zeichnen
+  // Spalten-Setup (wie im Mietvertrag)
+  const hoColWidth = (contentWidth - 20) / 2;
+  const hoLeftX = config.margin.left;
+  const hoRightX = config.margin.left + hoColWidth + 20;
+
+  // Hilfsfunktion für Unterschriftsfeld
+  const addHOSignature = (label: string, name: string, x: number, width: number) => {
     doc.setLineWidth(0.5);
     setColor(config.colors.text, 'draw');
-    doc.line(config.margin.left, currentY, config.margin.left + 80, currentY);
-    currentY += 4;
-    
-    // Label "Mieter X"
+    doc.line(x, currentY, x + width, currentY);
     doc.setFontSize(config.fontSize.small);
-    doc.setFont('helvetica', 'normal');
     setColor(config.colors.textLight);
-    const mieterLabel = vertrag.mieter.length > 1 ? `Mieter ${i + 1}` : 'Mieter';
-    doc.text(mieterLabel, config.margin.left, currentY);
-    
-    // Name des Mieters
-    currentY += 4;
-    doc.setFont('helvetica', 'normal');
+    doc.text(label, x, currentY + 4);
+    doc.setFont('helvetica', 'bold');
     setColor(config.colors.text);
-    doc.text(`${m.vorname} ${m.nachname}`, config.margin.left, currentY);
-    currentY += 12;
+    doc.text(name, x, currentY + 8);
+  };
+
+  // Zeile 1: Vermieter links | Mieter 1 rechts
+  const row1Y = currentY;
+  addHOSignature('Vermieter', vermieter.name || '—', hoLeftX, hoColWidth);
+  
+  if (vertrag.mieter.length > 0) {
+    currentY = row1Y;
+    const m0 = vertrag.mieter[0];
+    const m0Label = vertrag.mieter.length > 1 ? 'Mieter 1' : 'Mieter';
+    addHOSignature(m0Label, `${m0.vorname} ${m0.nachname}`, hoRightX, hoColWidth);
+  }
+  currentY = row1Y + 15;
+
+  // Zeile 2: Mieter 2 links | Mieter 3 rechts (falls vorhanden)
+  if (vertrag.mieter.length > 1) {
+    const row2Y = currentY;
+    const m1 = vertrag.mieter[1];
+    addHOSignature('Mieter 2', `${m1.vorname} ${m1.nachname}`, hoLeftX, hoColWidth);
+    
+    if (vertrag.mieter.length > 2) {
+      currentY = row2Y;
+      const m2 = vertrag.mieter[2];
+      addHOSignature('Mieter 3', `${m2.vorname} ${m2.nachname}`, hoRightX, hoColWidth);
+    }
+    currentY = row2Y + 15;
   }
 
   addFooter();
