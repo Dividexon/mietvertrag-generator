@@ -102,7 +102,7 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
               checked={kleinreparaturen.aktiv}
               onChange={(e) => updateVertrag('kleinreparaturen', { aktiv: e.target.checked })}
             />
-            <span>🔧 Kleinreparaturklausel aktivieren</span>
+            <span>Kleinreparaturklausel aktivieren</span>
           </label>
           
           {kleinreparaturen.aktiv && (
@@ -171,7 +171,7 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
                   checked={schoenheitsreparaturen.uebergabeRenoviert}
                   onChange={() => updateVertrag('schoenheitsreparaturen', { uebergabeRenoviert: true })}
                 />
-                <span>✨ Renoviert / nicht renovierungsbedürftig übergeben</span>
+                <span>Renoviert / nicht renovierungsbedürftig übergeben</span>
               </label>
               <label className={`radio-item ${!schoenheitsreparaturen.uebergabeRenoviert ? 'selected' : ''}`}>
                 <input
@@ -180,7 +180,7 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
                   checked={!schoenheitsreparaturen.uebergabeRenoviert}
                   onChange={() => updateVertrag('schoenheitsreparaturen', { uebergabeRenoviert: false })}
                 />
-                <span>🏚️ Unrenoviert übergeben</span>
+                <span>Unrenoviert übergeben</span>
               </label>
             </div>
           </div>
@@ -192,7 +192,7 @@ export function Step9Optionen({ vertrag, updateVertrag, onNext, onPrev }: Props)
                 checked={schoenheitsreparaturen.mieterPflicht}
                 onChange={(e) => updateVertrag('schoenheitsreparaturen', { mieterPflicht: e.target.checked })}
               />
-              <span>🎨 Mieter übernimmt laufende Schönheitsreparaturen während der Mietzeit</span>
+              <span>Mieter übernimmt laufende Schönheitsreparaturen während der Mietzeit</span>
             </label>
           )}
           

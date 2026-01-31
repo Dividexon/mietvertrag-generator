@@ -130,7 +130,7 @@ export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev }: Pr
           {/* Vermieter */}
           <div className="summary-section">
             <h3 onClick={() => goToStep(2)} style={{ cursor: 'pointer' }}>
-              👤 Vermieter <MdEdit size={16} style={{ marginLeft: '8px', color: 'var(--accent)' }} />
+              Vermieter <MdEdit size={16} style={{ marginLeft: '8px', color: 'var(--accent)' }} />
             </h3>
             <div className="summary-grid">
               <div className="summary-item">
@@ -147,7 +147,7 @@ export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev }: Pr
           {/* Mieter */}
           <div className="summary-section">
             <h3 onClick={() => goToStep(3)} style={{ cursor: 'pointer' }}>
-              👥 Mieter ({mieter.length}) <MdEdit size={16} style={{ marginLeft: '8px', color: 'var(--accent)' }} />
+              Mieter ({mieter.length}) <MdEdit size={16} style={{ marginLeft: '8px', color: 'var(--accent)' }} />
             </h3>
             {mieter.map((m, i) => (
               <div key={m.id} className="summary-grid" style={{ marginBottom: i < mieter.length - 1 ? '8px' : 0 }}>
@@ -166,7 +166,7 @@ export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev }: Pr
           {/* Mietobjekt */}
           <div className="summary-section">
             <h3 onClick={() => goToStep(4)} style={{ cursor: 'pointer' }}>
-              🏠 Mietobjekt <MdEdit size={16} style={{ marginLeft: '8px', color: 'var(--accent)' }} />
+              Mietobjekt <MdEdit size={16} style={{ marginLeft: '8px', color: 'var(--accent)' }} />
             </h3>
             <div className="summary-grid">
               <div className="summary-item">
@@ -191,7 +191,7 @@ export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev }: Pr
           {/* Mietkonditionen */}
           <div className="summary-section">
             <h3 onClick={() => goToStep(6)} style={{ cursor: 'pointer' }}>
-              💰 Miete <MdEdit size={16} style={{ marginLeft: '8px', color: 'var(--accent)' }} />
+              Miete <MdEdit size={16} style={{ marginLeft: '8px', color: 'var(--accent)' }} />
             </h3>
             <div className="summary-grid">
               <div className="summary-item">

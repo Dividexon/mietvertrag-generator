@@ -515,6 +515,17 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   // SAVE PDF
   // ============================================
   
-  const filename = `Mietvertrag_${mietobjekt.strasse}_${mietobjekt.hausnummer}_${new Date().toISOString().slice(0, 10)}.pdf`;
+  // Sanitize filename (remove special chars, umlauts)
+  const sanitize = (str: string) => str
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue')
+    .replace(/Ä/g, 'Ae').replace(/Ö/g, 'Oe').replace(/Ü/g, 'Ue')
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-zA-Z0-9_-]/g, '_');
+  
+  const strasse = sanitize(mietobjekt.strasse || 'Adresse');
+  const hausnummer = sanitize(mietobjekt.hausnummer || '');
+  const datum = new Date().toISOString().slice(0, 10);
+  
+  const filename = `Mietvertrag_${strasse}_${hausnummer}_${datum}.pdf`;
   doc.save(filename);
 }

@@ -42,7 +42,7 @@ export function Step5Mietzeit({ vertrag, updateVertrag, onNext, onPrev }: Props)
                   checked={!mietzeit.befristet}
                   onChange={() => handleChange('befristet', false)}
                 />
-                <span>♾️ Unbefristet</span>
+                <span>Unbefristet</span>
               </label>
               <label className={`radio-item ${mietzeit.befristet ? 'selected' : ''}`}>
                 <input
@@ -51,7 +51,7 @@ export function Step5Mietzeit({ vertrag, updateVertrag, onNext, onPrev }: Props)
                   checked={mietzeit.befristet}
                   onChange={() => handleChange('befristet', true)}
                 />
-                <span>📅 Befristet (Zeitmietvertrag)</span>
+                <span>Befristet (Zeitmietvertrag)</span>
               </label>
             </div>
           </div>

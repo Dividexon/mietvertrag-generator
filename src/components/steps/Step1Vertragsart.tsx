@@ -1,4 +1,4 @@
-import { MdChevronRight, MdHome, MdBusiness, MdDirectionsCar } from 'react-icons/md';
+import { MdChevronRight } from 'react-icons/md';
 import type { Mietvertrag, Vertragsart } from '../../types';
 
 interface Props {
@@ -8,23 +8,20 @@ interface Props {
 }
 
 export function Step1Vertragsart({ vertrag, updateVertrag, onNext }: Props) {
-  const vertragsarten: { value: Vertragsart; label: string; icon: React.ReactNode; description: string }[] = [
+  const vertragsarten: { value: Vertragsart; label: string; description: string }[] = [
     { 
       value: 'wohnraum', 
       label: 'Wohnraum', 
-      icon: <MdHome size={32} />,
       description: 'Mietvertrag für Wohnungen und Häuser nach deutschem Mietrecht'
     },
     { 
       value: 'gewerbe', 
       label: 'Gewerbe', 
-      icon: <MdBusiness size={32} />,
       description: 'Mietvertrag für Büros, Läden und Gewerberäume'
     },
     { 
       value: 'garage', 
       label: 'Garage / Stellplatz', 
-      icon: <MdDirectionsCar size={32} />,
       description: 'Separater Mietvertrag für Garagen und PKW-Stellplätze'
     },
   ];
@@ -61,19 +58,6 @@ export function Step1Vertragsart({ vertrag, updateVertrag, onNext }: Props) {
                   transition: 'all 0.2s',
                 }}
               >
-                <div style={{
-                  width: '64px',
-                  height: '64px',
-                  borderRadius: '16px',
-                  background: vertrag.vertragsart === art.value ? 'var(--accent)' : 'var(--bg-secondary)',
-                  color: vertrag.vertragsart === art.value ? 'white' : 'var(--accent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}>
-                  {art.icon}
-                </div>
                 <div style={{ flex: 1 }}>
                   <h3 style={{ 
                     fontSize: '1.1rem', 
@@ -102,6 +86,7 @@ export function Step1Vertragsart({ vertrag, updateVertrag, onNext }: Props) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: '1.2rem',
+                    flexShrink: 0,
                   }}>
                     ✓
                   </div>
@@ -118,7 +103,7 @@ export function Step1Vertragsart({ vertrag, updateVertrag, onNext }: Props) {
               borderRadius: '12px',
               color: 'white',
             }}>
-              <strong>⚠️ Hinweis:</strong> Der Gewerbemietvertrag befindet sich noch in Entwicklung.
+              <strong>Hinweis:</strong> Der Gewerbemietvertrag befindet sich noch in Entwicklung.
             </div>
           )}
           
@@ -130,7 +115,7 @@ export function Step1Vertragsart({ vertrag, updateVertrag, onNext }: Props) {
               borderRadius: '12px',
               color: 'white',
             }}>
-              <strong>⚠️ Hinweis:</strong> Der Garagenmietvertrag befindet sich noch in Entwicklung.
+              <strong>Hinweis:</strong> Der Garagenmietvertrag befindet sich noch in Entwicklung.
             </div>
           )}
         </div>

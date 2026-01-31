@@ -31,7 +31,7 @@ export function Step2Vermieter({ vertrag, updateVertrag, onNext, onPrev }: Props
                 checked={vermieter.typ === 'person'}
                 onChange={() => handleChange('typ', 'person')}
               />
-              <span>👤 Privatperson</span>
+              <span>Privatperson</span>
             </label>
             <label className={`radio-item ${vermieter.typ === 'firma' ? 'selected' : ''}`}>
               <input
@@ -40,7 +40,7 @@ export function Step2Vermieter({ vertrag, updateVertrag, onNext, onPrev }: Props
                 checked={vermieter.typ === 'firma'}
                 onChange={() => handleChange('typ', 'firma')}
               />
-              <span>🏢 Firma / GmbH</span>
+              <span>Firma / GmbH</span>
             </label>
           </div>
         </div>
