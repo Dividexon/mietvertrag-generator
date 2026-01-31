@@ -292,6 +292,78 @@ body {
   box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
 }
 
+/* Mobile/Desktop visibility */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex;
+  }
+  
+  .desktop-only {
+    display: none;
+  }
+}
+
+/* Mobile Progress Indicator */
+.progress-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.progress-mobile-nav {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.progress-mobile-nav:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.progress-mobile-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.progress-mobile-current {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 120px;
+}
+
+.progress-mobile-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.progress-mobile-number {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
 .progress-steps {
   display: flex;
   justify-content: space-between;
