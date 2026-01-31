@@ -1,17 +1,19 @@
-import { WIZARD_STEPS } from '../types';
+import { getWizardSteps, Vertragsart } from '../types';
 
 interface Props {
   currentStep: number;
+  vertragsart: Vertragsart;
 }
 
-export function ProgressBar({ currentStep }: Props) {
-  const progress = (currentStep / WIZARD_STEPS.length) * 100;
-  const currentStepData = WIZARD_STEPS[currentStep - 1];
+export function ProgressBar({ currentStep, vertragsart }: Props) {
+  const steps = getWizardSteps(vertragsart);
+  const progress = (currentStep / steps.length) * 100;
+  const currentStepData = steps[currentStep - 1];
 
   return (
     <div className="progress-container">
       <div className="progress-text">
-        Schritt <span>{currentStep}</span> von {WIZARD_STEPS.length} — {currentStepData?.title}
+        Schritt <span>{currentStep}</span> von {steps.length} — {currentStepData?.title}
       </div>
       <div className="progress-bar">
         <div 
@@ -21,7 +23,7 @@ export function ProgressBar({ currentStep }: Props) {
       </div>
       {/* Step indicators */}
       <div className="progress-steps">
-        {WIZARD_STEPS.map((step) => (
+        {steps.map((step) => (
           <div 
             key={step.id}
             className={`progress-step ${step.id === currentStep ? 'active' : ''} ${step.id < currentStep ? 'completed' : ''}`}

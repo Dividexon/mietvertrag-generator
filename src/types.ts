@@ -38,6 +38,94 @@ export interface Mieter {
 }
 
 // ============================================
+// GEWERBEMIETER (Firma)
+// ============================================
+export interface GewerbeMieter {
+  id: string;
+  firmenname: string;
+  rechtsform: string; // "GmbH", "UG", "GbR", "Einzelunternehmen", etc.
+  handelsregister?: string; // "HRB 12345 AG Bremen"
+  vertreter: string; // Geschäftsführer
+  strasse: string;
+  plz: string;
+  ort: string;
+  telefon?: string;
+  email?: string;
+  ustIdNr?: string; // Umsatzsteuer-ID
+}
+
+// ============================================
+// GEWERBE-SPEZIFISCH
+// ============================================
+export interface GewerbeObjekt {
+  strasse: string;
+  hausnummer: string;
+  plz: string;
+  ort: string;
+  geschoss?: string;
+  
+  // Nutzung
+  nutzungszweck: string; // "Büro", "Einzelhandel", "Lager", "Praxis", etc.
+  
+  // Flächen
+  bueroflaeche: number;
+  lagerflaeche: number;
+  verkaufsflaeche: number;
+  nebenflaeche: number;
+  gesamtflaeche: number;
+  
+  // Extras
+  stellplaetze: number;
+  kellerraeume: number;
+  
+  beschreibung?: string;
+}
+
+export interface GewerbeMiete {
+  grundmieteNetto: number;
+  umsatzsteuerOptiert: boolean; // §9 UStG Option
+  umsatzsteuerBetrag: number;
+  grundmieteBrutto: number;
+  nebenkostenVorauszahlung: number;
+  gesamtmiete: number;
+}
+
+export interface GewerbeMietzeit {
+  mietbeginn: string;
+  laufzeitJahre: number; // Feste Laufzeit in Jahren
+  verlaengerungsoptionen: number; // z.B. 2x 5 Jahre
+  kuendigungsfristMonate: number;
+}
+
+// ============================================
+// GARAGE/STELLPLATZ
+// ============================================
+export type GaragenArt = 'garage' | 'carport' | 'stellplatz' | 'tiefgarage' | '';
+
+export interface GarageObjekt {
+  art: GaragenArt;
+  strasse: string;
+  hausnummer: string;
+  plz: string;
+  ort: string;
+  nummer: string; // Garagen-/Stellplatznummer
+  beschreibung?: string; // z.B. "mit elektrischem Tor"
+}
+
+export interface GarageMiete {
+  monatlicheMiete: number;
+  kaution: number;
+  kautionArt: 'ueberweisung' | 'bar' | 'keine' | '';
+}
+
+export interface GarageMietzeit {
+  mietbeginn: string;
+  befristet: boolean;
+  mietende?: string;
+  kuendigungsfristMonate: number; // z.B. 3
+}
+
+// ============================================
 // MIETOBJEKT (§1)
 // ============================================
 export interface Mietobjekt {
@@ -330,6 +418,7 @@ export interface WizardStep {
   description: string;
 }
 
+// Wohnraum-Steps (10)
 export const WIZARD_STEPS: WizardStep[] = [
   { id: 1, key: 'vertragsart', title: 'Vertragsart', shortTitle: 'Art', description: 'Art des Mietvertrags wählen' },
   { id: 2, key: 'vermieter', title: 'Vermieter', shortTitle: 'Vermieter', description: 'Ihre Daten als Vermieter' },
@@ -342,6 +431,40 @@ export const WIZARD_STEPS: WizardStep[] = [
   { id: 9, key: 'optionen', title: 'Optionen', shortTitle: 'Optionen', description: 'Heizung, Reparaturen, Sonstiges' },
   { id: 10, key: 'abschluss', title: 'Abschluss', shortTitle: 'Fertig', description: 'Kaution, Vorschau & Unterschrift' },
 ];
+
+// Gewerbe-Steps (9)
+export const WIZARD_STEPS_GEWERBE: WizardStep[] = [
+  { id: 1, key: 'vertragsart', title: 'Vertragsart', shortTitle: 'Art', description: 'Art des Mietvertrags wählen' },
+  { id: 2, key: 'vermieter', title: 'Vermieter', shortTitle: 'Vermieter', description: 'Ihre Daten als Vermieter' },
+  { id: 3, key: 'mieter', title: 'Mieter/Firma', shortTitle: 'Firma', description: 'Daten des Gewerbemieters (Firma)' },
+  { id: 4, key: 'mietobjekt', title: 'Gewerbeobjekt', shortTitle: 'Objekt', description: 'Adresse, Flächen, Nutzungszweck' },
+  { id: 5, key: 'mietzeit', title: 'Vertragslaufzeit', shortTitle: 'Zeit', description: 'Laufzeit, Optionen, Kündigung' },
+  { id: 6, key: 'miete', title: 'Miete', shortTitle: 'Miete', description: 'Grundmiete (netto), USt, Nebenkosten' },
+  { id: 7, key: 'pflichten', title: 'Pflichten', shortTitle: 'Pflichten', description: 'Instandhaltung, Nutzung, Konkurrenzschutz' },
+  { id: 8, key: 'sonstiges', title: 'Sonstiges', shortTitle: 'Extras', description: 'Bankdaten, Kaution, Sondervereinbarungen' },
+  { id: 9, key: 'abschluss', title: 'Abschluss', shortTitle: 'Fertig', description: 'Zusammenfassung & Unterschriften' },
+];
+
+// Garage-Steps (5) - Kompakt
+export const WIZARD_STEPS_GARAGE: WizardStep[] = [
+  { id: 1, key: 'vertragsart', title: 'Vertragsart', shortTitle: 'Art', description: 'Art des Mietvertrags wählen' },
+  { id: 2, key: 'parteien', title: 'Vertragsparteien', shortTitle: 'Parteien', description: 'Vermieter und Mieter' },
+  { id: 3, key: 'garage', title: 'Garage/Stellplatz', shortTitle: 'Objekt', description: 'Art, Adresse, Nummer' },
+  { id: 4, key: 'konditionen', title: 'Konditionen', shortTitle: 'Miete', description: 'Miete, Kaution, Kündigungsfrist' },
+  { id: 5, key: 'abschluss', title: 'Abschluss', shortTitle: 'Fertig', description: 'Zusammenfassung & Unterschrift' },
+];
+
+// Helper: Get steps for contract type
+export function getWizardSteps(vertragsart: Vertragsart): WizardStep[] {
+  switch (vertragsart) {
+    case 'gewerbe':
+      return WIZARD_STEPS_GEWERBE;
+    case 'garage':
+      return WIZARD_STEPS_GARAGE;
+    default:
+      return WIZARD_STEPS;
+  }
+}
 
 // ============================================
 // GESCHOSS OPTIONS
@@ -366,4 +489,39 @@ export const KAUTION_ZAHLUNGSART_OPTIONS = [
   { value: 'buergschaft', label: 'Bürgschaft' },
   { value: 'kautionskonto', label: 'Kautionskonto/Sparbuch' },
   { value: 'ratenzahlung', label: 'Ratenzahlung (3 Raten)' },
+];
+
+// ============================================
+// GEWERBE OPTIONS
+// ============================================
+export const RECHTSFORM_OPTIONS = [
+  { value: 'einzelunternehmen', label: 'Einzelunternehmen' },
+  { value: 'gbr', label: 'GbR (Gesellschaft bürgerlichen Rechts)' },
+  { value: 'ohg', label: 'OHG (Offene Handelsgesellschaft)' },
+  { value: 'kg', label: 'KG (Kommanditgesellschaft)' },
+  { value: 'gmbh', label: 'GmbH' },
+  { value: 'ug', label: 'UG (haftungsbeschränkt)' },
+  { value: 'ag', label: 'AG (Aktiengesellschaft)' },
+  { value: 'ev', label: 'e.V. (eingetragener Verein)' },
+  { value: 'sonstige', label: 'Sonstige' },
+];
+
+export const NUTZUNGSZWECK_OPTIONS = [
+  { value: 'buero', label: 'Büro' },
+  { value: 'praxis', label: 'Praxis (Arzt, Rechtsanwalt, etc.)' },
+  { value: 'einzelhandel', label: 'Einzelhandel / Laden' },
+  { value: 'gastronomie', label: 'Gastronomie' },
+  { value: 'lager', label: 'Lager / Logistik' },
+  { value: 'werkstatt', label: 'Werkstatt / Produktion' },
+  { value: 'sonstige', label: 'Sonstige' },
+];
+
+// ============================================
+// GARAGE OPTIONS
+// ============================================
+export const GARAGEN_ART_OPTIONS = [
+  { value: 'garage', label: 'Einzelgarage' },
+  { value: 'tiefgarage', label: 'Tiefgaragenstellplatz' },
+  { value: 'carport', label: 'Carport' },
+  { value: 'stellplatz', label: 'Stellplatz (Freifläche)' },
 ];

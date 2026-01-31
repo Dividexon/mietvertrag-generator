@@ -160,7 +160,7 @@ function App() {
         </div>
       </header>
 
-      <ProgressBar currentStep={currentStep} />
+      <ProgressBar currentStep={currentStep} vertragsart={vertrag.vertragsart} />
 
       <main className="main-content">
         {renderStep()}
