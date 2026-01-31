@@ -1,6 +1,6 @@
 # Mietvertrag Generator - Vollständige Spezifikation
 
-Basierend auf: **Haus & Grund Bremen Mietvertrag für Wohnraum**
+Professioneller Mietvertrag nach deutschem Mietrecht (BGB §§535 ff.)
 
 ---
 

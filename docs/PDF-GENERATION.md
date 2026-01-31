@@ -5,43 +5,48 @@
 ```
 User-Eingabe (Formular)
     ↓
-JSON-Objekt (Schema)
+TypeScript Mietvertrag-Objekt
     ↓
-Template-Engine (Handlebars) füllt HTML-Template
+jsPDF Generator (src/utils/pdfGenerator.ts)
     ↓
-Puppeteer rendert HTML zu PDF
-    ↓
-Download für Nutzer
+PDF Download für Nutzer
 ```
 
-## Layout-Spezifikation (Original)
+## Layout-Spezifikation (Modern)
 
 | Eigenschaft | Wert |
 |-------------|------|
 | Papierformat | DIN A4 (210mm × 297mm) |
-| Ränder | 20mm oben/unten, 15mm links/rechts |
-| Schriftart | Arial |
-| Schriftgrößen | 8pt (Fußnoten) - 11pt (Haupttext) - 14pt (Titel) |
-| Kopfzeile | "Haus & Grund Bremen GmbH" + Seriennummer |
-| Fußzeile | "Seite X von 10" |
-| Sections | Nummerierte Paragraphen (§1, §2 ...) |
+| Ränder | 25mm oben/unten, 20mm links/rechts |
+| Schriftart | Helvetica (PDF Standard) |
+| Schriftgrößen | 8pt (Fußnoten) - 9pt (Text) - 12pt (Überschriften) - 18pt (Titel) |
+| Kopfzeile | "MIETVERTRAG" + Erstellungsdatum |
+| Fußzeile | Seitenzahl zentriert |
+| Akzentfarbe | Cyan (#00bcd4) für Paragraphen-Balken |
+| Sections | Nummerierte Paragraphen (§1, §2 ...) mit Akzent-Balken |
 
-## Dependencies
+## Dependency
 
 ```bash
-npm install handlebars puppeteer
+npm install jspdf
 ```
 
 ## Dateien
 
-- `templates/mietvertrag-template.html` - HTML-Vorlage
-- `lib/pdf-generator.js` - Generator-Logik
-- `pages/api/generate-mietvertrag.js` - API-Route
+- `src/utils/pdfGenerator.ts` - Moderner PDF Generator mit jsPDF
+- Kein Template-System nötig - alles programmatisch generiert
 
-## Wichtige Details
+## Features
 
-1. **Schriftarten:** Arial/Helvetica via @font-face laden
-2. **Checkboxen:** Unicode-Symbole ☐ (leer) und ☑ (checked)
-3. **Tabellen:** `border-collapse: collapse` + 1px solid
-4. **Seitenzahlen:** Puppeteer's footerTemplate mit pageNumber/totalPages
-5. **Mehrseitige Paragrafen:** Vollständigen Gesetzestext manuell einfügen
+1. **Automatische Seitenumbrüche**: Prüft vor jedem Element ob genug Platz
+2. **Konsistente Formatierung**: Einheitliche Helper-Funktionen
+3. **Checkbox-Symbole**: Unicode ☐ und ☑ für visuelle Checklisten
+4. **Währungsformatierung**: Korrekte deutsche Formatierung mit €
+5. **Datumsformatierung**: Deutsches Format (TT.MM.JJJJ)
+
+## Design-Prinzipien
+
+- **Clean & Modern**: Keine überladenen Designs
+- **Professionell**: Klare Hierarchie durch Typografie
+- **Marken-neutral**: Kein externes Branding
+- **Lesbar**: Ausreichend Weißraum und Kontrast

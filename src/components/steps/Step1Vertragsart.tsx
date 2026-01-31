@@ -13,7 +13,7 @@ export function Step1Vertragsart({ vertrag, updateVertrag, onNext }: Props) {
       value: 'wohnraum', 
       label: 'Wohnraum', 
       icon: <MdHome size={32} />,
-      description: 'Mietvertrag für Wohnungen und Häuser nach Haus & Grund Bremen'
+      description: 'Mietvertrag für Wohnungen und Häuser nach deutschem Mietrecht'
     },
     { 
       value: 'gewerbe', 

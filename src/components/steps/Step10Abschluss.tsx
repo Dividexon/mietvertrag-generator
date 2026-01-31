@@ -1,6 +1,7 @@
 import { MdChevronLeft, MdPictureAsPdf, MdEdit, MdWarning } from 'react-icons/md';
 import type { Mietvertrag } from '../../types';
 import { KAUTION_ZAHLUNGSART_OPTIONS } from '../../types';
+import { generateMietvertragPDF } from '../../utils/pdfGenerator';
 
 interface Props {
   vertrag: Mietvertrag;
@@ -22,8 +23,7 @@ export function Step10Abschluss({ vertrag, updateVertrag, goToStep, onPrev }: Pr
   };
 
   const handleExportPDF = () => {
-    // TODO: Echte PDF-Generierung
-    window.print();
+    generateMietvertragPDF(vertrag);
   };
 
   return (

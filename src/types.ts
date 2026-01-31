@@ -1,5 +1,5 @@
 // Mietvertrag Generator - TypeScript Types
-// Basierend auf Haus & Grund Bremen Vorlage (10 Seiten, 23 Paragraphen)
+// Professioneller Mietvertrag nach deutschem Mietrecht (BGB §§535 ff.)
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 

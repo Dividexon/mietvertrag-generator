@@ -186,9 +186,13 @@ export function useMietvertrag() {
   ) => {
     setVertrag(prev => {
       const currentValue = prev[section];
-      const newValue = typeof currentValue === 'object' && currentValue !== null && !Array.isArray(currentValue)
-        ? { ...currentValue, ...data }
-        : data;
+      let newValue: Mietvertrag[K];
+      
+      if (typeof currentValue === 'object' && currentValue !== null && !Array.isArray(currentValue)) {
+        newValue = { ...(currentValue as object), ...(data as object) } as Mietvertrag[K];
+      } else {
+        newValue = data as Mietvertrag[K];
+      }
       
       return {
         ...prev,
