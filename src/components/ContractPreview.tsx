@@ -176,11 +176,11 @@ export function ContractPreview({
                 <div 
                   className="preview-signature-area"
                   onClick={() => {
-                    if (unterschriften.vermieterSignatur) {
-                      // Already signed - option to change
-                      setShowSignaturePad({ type: 'vermieter', index: 0 });
-                    } else {
+                    // Always show selection modal first (if there are saved signatures)
+                    if (savedSignatures.length > 0) {
                       setShowSavedSignatures({ type: 'vermieter', index: 0 });
+                    } else {
+                      setShowSignaturePad({ type: 'vermieter', index: 0 });
                     }
                   }}
                 >
@@ -203,10 +203,11 @@ export function ContractPreview({
                   <div 
                     className="preview-signature-area"
                     onClick={() => {
-                      if (unterschriften.mieterSignaturen?.[index]) {
-                        setShowSignaturePad({ type: 'mieter', index });
-                      } else {
+                      // Always show selection modal first (if there are saved signatures)
+                      if (savedSignatures.length > 0) {
                         setShowSavedSignatures({ type: 'mieter', index });
+                      } else {
+                        setShowSignaturePad({ type: 'mieter', index });
                       }
                     }}
                   >
