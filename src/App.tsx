@@ -147,6 +147,20 @@ function App() {
     localStorage.setItem(SIGNATURES_STORAGE_KEY, JSON.stringify(updated));
   };
 
+  const handleDeleteSignatureTemplate = (id: string) => {
+    const updated = savedSignatures.filter(sig => sig.id !== id);
+    setSavedSignatures(updated);
+    localStorage.setItem(SIGNATURES_STORAGE_KEY, JSON.stringify(updated));
+  };
+
+  const handleEditSignatureTemplate = (id: string, signature: string) => {
+    const updated = savedSignatures.map(sig => 
+      sig.id === id ? { ...sig, signature } : sig
+    );
+    setSavedSignatures(updated);
+    localStorage.setItem(SIGNATURES_STORAGE_KEY, JSON.stringify(updated));
+  };
+
   // Get current vertrag info for selector
   const getVertragInfo = () => {
     const { mietobjekt, vertragsart } = vertrag;
@@ -331,7 +345,7 @@ function App() {
         onSelect={handleEdit}
       />
 
-      <ProgressBar currentStep={currentStep} vertragsart={vertrag.vertragsart} />
+      <ProgressBar currentStep={currentStep} vertragsart={vertrag.vertragsart} onStepClick={goToStep} />
 
       <main className="main-content">
         {renderStep()}
@@ -354,6 +368,8 @@ function App() {
           onUpdateSignature={handleUpdateSignature}
           savedSignatures={savedSignatures}
           onSaveSignatureTemplate={handleSaveSignatureTemplate}
+          onDeleteSignatureTemplate={handleDeleteSignatureTemplate}
+          onEditSignatureTemplate={handleEditSignatureTemplate}
         />
       )}
     </div>

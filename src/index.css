@@ -202,17 +202,79 @@ body {
   border: 1px solid var(--border-color);
 }
 
-.progress-text {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  text-align: center;
-  font-weight: 500;
+/* Steps Row (Label + Number) */
+.progress-steps-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-.progress-text span {
+.progress-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  flex: 1;
+  transition: all 0.2s;
+}
+
+.progress-step-item:hover .progress-step-label {
+  color: var(--accent);
+}
+
+.progress-step-item:hover .progress-step-number {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.progress-step-label {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.progress-step-item.active .progress-step-label {
   color: var(--accent);
   font-weight: 700;
+}
+
+.progress-step-item.completed .progress-step-label {
+  color: var(--text-secondary);
+}
+
+.progress-step-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-input);
+  border: 2px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.progress-step-item.active .progress-step-number {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(0, 188, 212, 0.4);
+}
+
+.progress-step-item.completed .progress-step-number {
+  background: var(--accent-pastel);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .progress-bar {
@@ -250,6 +312,12 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
+  cursor: pointer;
+}
+
+.progress-step:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .progress-step.active {
@@ -2045,7 +2113,14 @@ select {
   margin-bottom: 20px;
 }
 
+.signature-select-item-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
 .signature-select-item {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -2071,6 +2146,44 @@ select {
 
 .signature-select-item span {
   font-weight: 500;
+}
+
+.signature-select-item-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.signature-action-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.signature-action-btn.edit {
+  background: var(--bg-input);
+  color: var(--text-secondary);
+}
+
+.signature-action-btn.edit:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.signature-action-btn.delete {
+  background: var(--bg-input);
+  color: var(--text-secondary);
+}
+
+.signature-action-btn.delete:hover {
+  background: var(--error);
+  color: white;
 }
 
 .signature-select-new {

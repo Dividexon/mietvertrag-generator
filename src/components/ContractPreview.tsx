@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MdClose, MdEdit, MdPictureAsPdf } from 'react-icons/md';
+import { MdClose, MdEdit, MdPictureAsPdf, MdDelete } from 'react-icons/md';
 import { SignaturePad } from './SignaturePad';
 import type { Mietvertrag } from '../types';
 import { generateMietvertragPDF } from '../utils/pdfGenerator';
@@ -10,6 +10,8 @@ interface Props {
   onUpdateSignature: (type: 'vermieter' | 'mieter', index: number, signature: string) => void;
   savedSignatures: SavedSignature[];
   onSaveSignatureTemplate: (name: string, signature: string) => void;
+  onDeleteSignatureTemplate: (id: string) => void;
+  onEditSignatureTemplate: (id: string, signature: string) => void;
 }
 
 export interface SavedSignature {
@@ -25,6 +27,8 @@ export function ContractPreview({
   onUpdateSignature,
   savedSignatures,
   onSaveSignatureTemplate,
+  onDeleteSignatureTemplate,
+  onEditSignatureTemplate,
 }: Props) {
   const [showSignaturePad, setShowSignaturePad] = useState<{
     type: 'vermieter' | 'mieter';
@@ -34,6 +38,8 @@ export function ContractPreview({
     type: 'vermieter' | 'mieter';
     index: number;
   } | null>(null);
+  const [editingSignature, setEditingSignature] = useState<SavedSignature | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<SavedSignature | null>(null);
 
   const { vermieter, mieter, mietobjekt, mietzeit, miete, kaution, unterschriften } = vertrag;
 
@@ -237,14 +243,38 @@ export function ContractPreview({
                   <h4>Gespeicherte Unterschriften</h4>
                   <div className="signature-select-list">
                     {savedSignatures.map(sig => (
-                      <button
-                        key={sig.id}
-                        className="signature-select-item"
-                        onClick={() => handleUseSavedSignature(sig.signature)}
-                      >
-                        <img src={sig.signature} alt={sig.name} />
-                        <span>{sig.name}</span>
-                      </button>
+                      <div key={sig.id} className="signature-select-item-wrapper">
+                        <button
+                          className="signature-select-item"
+                          onClick={() => handleUseSavedSignature(sig.signature)}
+                        >
+                          <img src={sig.signature} alt={sig.name} />
+                          <span>{sig.name}</span>
+                        </button>
+                        <div className="signature-select-item-actions">
+                          <button
+                            className="signature-action-btn edit"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditingSignature(sig);
+                              setShowSavedSignatures(null);
+                            }}
+                            title="Bearbeiten"
+                          >
+                            <MdEdit size={18} />
+                          </button>
+                          <button
+                            className="signature-action-btn delete"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteConfirm(sig);
+                            }}
+                            title="Löschen"
+                          >
+                            <MdDelete size={18} />
+                          </button>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -278,6 +308,48 @@ export function ContractPreview({
             onCancel={() => setShowSignaturePad(null)}
             showSaveAsTemplate={true}
           />
+        )}
+
+        {/* Edit Signature Modal */}
+        {editingSignature && (
+          <SignaturePad
+            onSave={(signature) => {
+              onEditSignatureTemplate(editingSignature.id, signature);
+              setEditingSignature(null);
+            }}
+            onCancel={() => setEditingSignature(null)}
+            initialSignature={editingSignature.signature}
+            showSaveAsTemplate={false}
+          />
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {deleteConfirm && (
+          <div className="signature-select-modal">
+            <div className="signature-select-content">
+              <h3>Unterschrift löschen?</h3>
+              <p style={{ textAlign: 'center', marginBottom: '20px', color: 'var(--text-secondary)' }}>
+                "{deleteConfirm.name}" wirklich löschen?
+              </p>
+              <button 
+                className="signature-select-new"
+                style={{ background: 'var(--error)' }}
+                onClick={() => {
+                  onDeleteSignatureTemplate(deleteConfirm.id);
+                  setDeleteConfirm(null);
+                }}
+              >
+                <MdDelete size={20} />
+                Ja, löschen
+              </button>
+              <button 
+                className="signature-select-cancel"
+                onClick={() => setDeleteConfirm(null)}
+              >
+                Abbrechen
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>
