@@ -1264,16 +1264,6 @@ export function generateMietvertragPDF(vertrag: Mietvertrag): void {
   addNumberedItem('5.', 'Bei Eigenleistung (Kehrwoche): Genaue Zuweisung der Aufgaben (Erdgeschoss reinigt Eingang, obere Stockwerke Treppenabschnitte etc.).');
   addNumberedItem('6.', 'Winterdienst: Mieter des tiefsten Geschosses sind für Gehwegreinigung/Streuen zuständig, sofern vereinbart.');
 
-  // Bremen-Klausel (nur wenn Ort Bremen ist)
-  const ortLower = (vertrag.mietobjekt.ort || '').toLowerCase();
-  if (ortLower.includes('bremen') || ortLower.includes('bremerhaven')) {
-    addSpace(4);
-    addInfoBox([
-      'Nur bei Mietobjekten im Lande Bremen:',
-      'Die Mieter des zutiefst gelegenen Geschosses sind verpflichtet, die Polizeipflicht gemäß § 41 Brem. LStrG zu übernehmen. Eine diesbezügliche Erklärung ist bei der Ortspolizeibehörde abzugeben.',
-    ]);
-  }
-
   // Unterschriften-Bereich
   addSpace(10);
   checkPageBreak(60);
