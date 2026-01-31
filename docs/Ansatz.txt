@@ -1,0 +1,755 @@
+Executive Summary
+Entwickle eine professionelle Web-Applikation zur Generierung rechtssicherer Wohnraummietverträge nach deutschem Recht (BGB, insb. §§ 535-580a). Die App führt Vermieter durch einen mehrstufigen Wizard und generiert ein layoutgetreues PDF basierend auf dem Haus & Grund Bremen Standard.
+
+1. Vollständiges Datenmodell
+1.1 Vertragsparteien
+typescriptinterface Vermieter {
+  typ: 'natuerliche_person' | 'firma';
+  name: string;
+  strasse: string;
+  plz: string;
+  ort: string;
+  
+  // Nur bei Firma:
+  vertreter?: {
+    name: string;
+    position: string;
+  };
+}
+
+interface Mieter {
+  vorname: string;
+  nachname: string;
+  geburtsdatum: Date;
+  strasse: string;
+  plz: string;
+  ort: string;
+}
+
+interface Vertragsparteien {
+  vermieter: Vermieter;
+  mieter: Mieter[]; // Array: mehrere Mieter als Gesamtschuldner
+  // Wichtig: Bei mehreren Mietern erscheint automatisch § 19
+}
+1.2 Mietobjekt (§ 1)
+typescriptinterface Mietraeume {
+  adresse: {
+    strasse: string;
+    hausnummer: string;
+    plz: string;
+    ort: string;
+    wohnungsnummer?: string;
+    lage?: 'links' | 'rechts'; // im Geschoss
+  };
+  
+  geschoss: string; // "EG", "1.OG", "DG"
+  
+  raeume: {
+    zimmer: number;
+    kueche: 'kueche' | 'kochnische' | 'keine';
+    bad_dusche: boolean;
+    wc_raum: boolean;
+    balkon_terrasse: boolean;
+    diele: boolean;
+    boden: boolean;
+    keller: boolean;
+  };
+  
+  // Zusätzliche Mietobjekte
+  stellplatz?: {
+    typ: 'garage' | 'carport' | 'stellplatz' | 'keine';
+    anzahl?: number;
+  };
+  
+  garten?: {
+    mitbenutzung: boolean;
+    groesse_qm?: number;
+  };
+  
+  gemeinschaftseinrichtungen?: string; // Freitext
+  
+  // Schlüssel (wichtig für § 18 Rückgabe)
+  schluessel: {
+    schliessanlage: number;
+    haus: number;
+    wohnung: number;
+    briefkasten: number;
+    sonstige?: string;
+  };
+}
+1.3 Mietkonditionen (§ 2, § 5, § 6, § 7, § 8)
+typescriptinterface Mietkonditionen {
+  // § 2 Mietzeit
+  mietbeginn: Date;
+  vertragsart: 'unbefristet' | 'befristet';
+  
+  // Nur bei befristet:
+  befristung?: {
+    mietende: Date;
+    grund: 'eigenbedarf' | 'umbau' | 'dienstleistung';
+    grundBeschreibung: string; // Pflichtfeld gem. § 575 BGB!
+  };
+  
+  // § 5.1 Grundmiete
+  grundmiete: {
+    wohnraum: number; // EUR
+    stellplatz?: number; // EUR
+    sonstiges?: number; // EUR
+    summe: number; // automatisch berechnet
+  };
+  
+  // § 5.2 Betriebskosten (siehe separates Schema unten)
+  betriebskosten: Betriebskosten;
+  
+  // § 6 Staffelmiete ODER § 7 Indexmiete (mutual exclusive)
+  mieterhoehung: {
+    typ: 'keine' | 'staffel' | 'index';
+    
+    staffel?: {
+      erhoehungen: Array<{
+        datum: Date;
+        betrag: number;
+      }>;
+    };
+    
+    index?: {
+      startdatum: Date;
+      schwelle_prozent: number; // z.B. 3
+    };
+  };
+  
+  // § 8 Fälligkeit
+  faelligkeit: {
+    bankverbindung: {
+      iban: string;
+      bic: string;
+      kontoinhaber: string;
+    };
+  };
+  
+  // § 20 Mietsicherheit
+  kaution: {
+    betrag: number; // max 3x Grundmiete
+    zahlungsart: 'ueberweisung' | 'verpfaendung_sparbuch' | 'buergschaft';
+  };
+}
+1.4 Betriebskosten-Schema (§ 5.2)
+KRITISCH: Der Haus & Grund Vertrag hat 26 vordefinierte Betriebskostenpositionen + Sonstige!
+typescripttype Abrechnungsschluessel = 
+  | '1' // Wohnfläche
+  | '2' // Personen
+  | '3' // Einheiten
+  | '4' // Verbrauch/Zähler
+  | '5' // Heizkostenverordnung (30/70)
+  | '6' // Miteigentumsanteile (WEG)
+  | '7' // Nach Bescheid/Rechnung
+  | '8' // Direkte Abrechnung Mieter-Versorger
+  | '9'; // Eigenleistung Mieter
+
+interface BetriebskostenPosition {
+  aktiv: boolean;
+  abrechnungsschluessel?: Abrechnungsschluessel;
+}
+
+interface Betriebskosten {
+  // Predefined aus Formular:
+  heizung: BetriebskostenPosition;
+  schornsteinreinigung: BetriebskostenPosition;
+  warmwasser: BetriebskostenPosition;
+  wartung_gasgeraete: BetriebskostenPosition;
+  wasser_abwasser: BetriebskostenPosition;
+  niederschlagswasser: BetriebskostenPosition;
+  muellbeseitigung: BetriebskostenPosition;
+  grundsteuer: BetriebskostenPosition;
+  zweckverband: BetriebskostenPosition;
+  feuerstaettenschau: BetriebskostenPosition;
+  versicherung: BetriebskostenPosition;
+  beleuchtung: BetriebskostenPosition;
+  gemeinschaftsstrom: BetriebskostenPosition;
+  antenne_breitband: BetriebskostenPosition;
+  gebaeudereinigung: BetriebskostenPosition;
+  ungezieferbekaempfung: BetriebskostenPosition;
+  gehwegreinigung: BetriebskostenPosition;
+  strassenreinigung: BetriebskostenPosition;
+  gartenpflege: BetriebskostenPosition;
+  hauswart: BetriebskostenPosition;
+  aufzug: BetriebskostenPosition;
+  rauchwarnmelder: BetriebskostenPosition;
+  hebeanlage: BetriebskostenPosition;
+  lueftungsanlage: BetriebskostenPosition;
+  dachrinnenreinigung: BetriebskostenPosition;
+  legionellenpruefung: BetriebskostenPosition;
+  
+  sonstige: Array<{
+    bezeichnung: string;
+    abrechnungsschluessel: Abrechnungsschluessel;
+  }>;
+  
+  vorauszahlung_monatlich: number; // Summe
+}
+1.5 Weitere Vertragsbestandteile
+typescriptinterface WeitereKlauseln {
+  // § 9 Heizung
+  heizung: {
+    art: string; // "Zentralheizung", "Gasetagenheizung"
+    heizperiode_von: string; // "01.10"
+    heizperiode_bis: string; // "30.04"
+    heizzeit_von: string; // "06:00"
+    heizzeit_bis: string; // "22:00"
+    temperatur_grad: number; // 20
+  };
+  
+  // § 11 Benutzung
+  tierhaltung: 'erlaubt' | 'zustimmung_erforderlich' | 'verboten';
+  
+  // § 14 Kleinreparaturen
+  kleinreparaturen: {
+    aktiv: boolean;
+    einzelfall_max: number; // z.B. 100 EUR
+    jahresmax: number; // z.B. 450 EUR
+  };
+  
+  // § 15 Schönheitsreparaturen
+  schoenheitsreparaturen: {
+    uebertragen: boolean; // Auf Mieter
+    zustand_uebergabe: 'renoviert' | 'nicht_renovierungsbeduerftig';
+  };
+  
+  // § 16 Hausordnung
+  hausordnung_beigefuegt: boolean; // Immer true
+  
+  // § 21 Sonstige Vereinbarungen
+  sonstige_vereinbarungen?: string;
+}
+
+2. Rechtslogik & Validierung
+2.1 Automatische Checks (mit Warn/Error-System)
+typescriptinterface ValidationRule {
+  regel: string;
+  typ: 'ERROR' | 'WARNING' | 'INFO';
+  pruefen: (data: MietvertragDaten) => boolean;
+  meldung: string;
+  rechtsgrundlage?: string;
+}
+
+const VALIDATION_RULES: ValidationRule[] = [
+  // ERRORS (blockieren Generierung)
+  {
+    regel: 'Kaution max. 3 Monatsmieten',
+    typ: 'ERROR',
+    pruefen: (d) => d.kaution.betrag <= d.grundmiete.summe * 3,
+    meldung: 'Kaution darf max. 3 Monats-Grundmieten betragen',
+    rechtsgrundlage: '§ 551 Abs. 1 BGB'
+  },
+  
+  {
+    regel: 'Befristungsgrund bei Zeitmietvertrag',
+    typ: 'ERROR',
+    pruefen: (d) => {
+      if (d.vertragsart === 'befristet') {
+        return d.befristung?.grundBeschreibung.length > 20;
+      }
+      return true;
+    },
+    meldung: 'Befristungsgrund muss gem. § 575 BGB schriftlich mitgeteilt werden',
+    rechtsgrundlage: '§ 575 Abs. 1 S. 2 BGB'
+  },
+  
+  // WARNINGS (erlaubt Generierung, warnt aber)
+  {
+    regel: 'Kleinreparaturklausel Einzelfall',
+    typ: 'WARNING',
+    pruefen: (d) => {
+      if (!d.kleinreparaturen.aktiv) return true;
+      return d.kleinreparaturen.einzelfall_max <= 120;
+    },
+    meldung: 'BGH: Einzelfall-Grenze über 100-120€ kann unwirksam sein',
+    rechtsgrundlage: 'BGH VIII ZR 78/06'
+  },
+  
+  {
+    regel: 'Kleinreparaturklausel Jahresgrenze',
+    typ: 'WARNING',
+    pruefen: (d) => {
+      if (!d.kleinreparaturen.aktiv) return true;
+      const jahresProzent = (d.kleinreparaturen.jahresmax / (d.grundmiete.summe * 12)) * 100;
+      return jahresProzent <= 8;
+    },
+    meldung: 'BGH: Jahresgrenze sollte ca. 6-8% der Jahreskaltmiete nicht überschreiten',
+    rechtsgrundlage: 'BGH VIII ZR 242/06'
+  },
+  
+  {
+    regel: 'Schönheitsreparaturen nur bei übergabe renoviert',
+    typ: 'WARNING',
+    pruefen: (d) => {
+      if (!d.schoenheitsreparaturen.uebertragen) return true;
+      return d.schoenheitsreparaturen.zustand_uebergabe === 'renoviert';
+    },
+    meldung: 'Übertragung der Schönheitsreparaturen kann unwirksam sein bei unrenovierter Übergabe',
+    rechtsgrundlage: 'BGH VIII ZR 185/14'
+  },
+  
+  // INFO
+  {
+    regel: 'Staffelmiete: Min. 12 Monate Abstand',
+    typ: 'INFO',
+    pruefen: (d) => {
+      if (d.mieterhoehung.typ !== 'staffel') return true;
+      // Prüfe Abstände
+      const dates = d.mieterhoehung.staffel.erhoehungen.map(e => e.datum);
+      for (let i = 1; i < dates.length; i++) {
+        const diff = (dates[i].getTime() - dates[i-1].getTime()) / (1000 * 60 * 60 * 24);
+        if (diff < 365) return false;
+      }
+      return true;
+    },
+    meldung: 'Staffelmiete muss mind. 12 Monate unverändert bleiben',
+    rechtsgrundlage: '§ 557a Abs. 2 BGB'
+  }
+];
+2.2 Dynamische Paragraph-Anzeige
+Wichtig: Nicht alle Paragraphen erscheinen immer!
+
+§ 6 (Staffelmiete) NUR wenn mieterhoehung.typ === 'staffel'
+§ 7 (Indexmiete) NUR wenn mieterhoehung.typ === 'index'
+§ 19 (Personenmehrheit) NUR wenn mieter.length > 1
+
+
+3. Frontend: Multi-Step Wizard
+3.1 Wizard-Steps
+typescriptconst WIZARD_STEPS = [
+  {
+    id: 'parteien',
+    title: 'Vertragsparteien',
+    description: 'Wer vermietet an wen?',
+    felder: ['vermieter', 'mieter'] // mit "Mieter hinzufügen" Button
+  },
+  {
+    id: 'objekt',
+    title: 'Mietobjekt',
+    description: 'Was wird vermietet?',
+    felder: ['adresse', 'raeume', 'stellplatz', 'schluessel']
+  },
+  {
+    id: 'mietzeit',
+    title: 'Mietzeit & Vertragsart',
+    description: 'Ab wann und wie lange?',
+    felder: ['mietbeginn', 'vertragsart', 'befristung?']
+  },
+  {
+    id: 'miete',
+    title: 'Miete & Betriebskosten',
+    description: 'Wie viel kostet es?',
+    felder: ['grundmiete', 'betriebskosten_checkboxen', 'vorauszahlung']
+  },
+  {
+    id: 'sicherheit',
+    title: 'Kaution & Konto',
+    description: 'Sicherheit & Zahlungsdaten',
+    felder: ['kaution', 'bankverbindung']
+  },
+  {
+    id: 'sonstiges',
+    title: 'Zusatzvereinbarungen',
+    description: 'Heizung, Tierhaltung, Reparaturen',
+    felder: ['heizung', 'tierhaltung', 'kleinreparaturen', 'schoenheitsreparaturen']
+  },
+  {
+    id: 'review',
+    title: 'Zusammenfassung',
+    description: 'Prüfen Sie alle Angaben',
+    component: <ReviewComponent />
+  }
+];
+3.2 UX-Features
+1. Live-Vorschau:
+tsx// Wenn User Miete eingibt, rechts Mini-Preview:
+<LivePreview section="§5_miete">
+  § 5 Miete
+  
+  1. Die Grundmiete beträgt monatlich für
+     a) den Wohnraum           {grundmiete.wohnraum}€
+     b) Garage/Stellplatz      {grundmiete.stellplatz}€
+     
+     Summe Grundmiete          {grundmiete.summe}€
+</LivePreview>
+2. Conditional Fields:
+tsx{vertragsart === 'befristet' && (
+  <Alert type="warning">
+    ⚠️ Bei Zeitmietverträgen muss der Befristungsgrund schriftlich 
+    mitgeteilt werden (§ 575 BGB), sonst gilt der Vertrag als unbefristet!
+  </Alert>
+  <TextArea 
+    label="Grund der Befristung (Pflichtangabe)" 
+    required
+    minLength={50}
+  />
+)}
+3. Betriebskosten-Tabelle:
+tsx<BetriebskostenTable>
+  {/* 26 Zeilen mit Checkboxen */}
+  <Row>
+    <Checkbox checked={bk.heizung.aktiv} />
+    <Label>a) Heizung</Label>
+    <Select value={bk.heizung.schluessel}>
+      <option value="5">5 - nach Heizkostenverordnung</option>
+      <option value="1">1 - nach Wohnfläche</option>
+    </Select>
+  </Row>
+  {/* ... */}
+</BetriebskostenTable>
+
+<Button onClick={addSonstigeBK}>+ Sonstige Position hinzufügen</Button>
+4. Validation Feedback:
+tsx<ValidationPanel>
+  {errors.map(err => (
+    <ValidationItem type={err.typ}>
+      <Icon />
+      <Text>{err.meldung}</Text>
+      <Link href="#">{err.rechtsgrundlage}</Link>
+    </ValidationItem>
+  ))}
+</ValidationPanel>
+3.3 State Management
+typescript// Nutze Zustand + localStorage für Persistenz
+import create from 'zustand';
+import { persist } from 'zustand/middleware';
+
+interface MietvertragStore {
+  data: MietvertragDaten;
+  currentStep: number;
+  validationErrors: ValidationRule[];
+  
+  updateData: (path: string, value: any) => void;
+  nextStep: () => void;
+  prevStep: () => void;
+  validate: () => boolean;
+  generatePDF: () => Promise<Blob>;
+}
+
+const useMietvertragStore = create(
+  persist(
+    (set, get) => ({
+      data: INITIAL_DATA,
+      currentStep: 0,
+      validationErrors: [],
+      
+      updateData: (path, value) => set((state) => ({
+        data: setDeepValue(state.data, path, value)
+      })),
+      
+      validate: () => {
+        const errors = VALIDATION_RULES
+          .filter(rule => !rule.pruefen(get().data))
+          .filter(rule => rule.typ === 'ERROR');
+        
+        set({ validationErrors: errors });
+        return errors.length === 0;
+      },
+      
+      // ...
+    }),
+    { name: 'mietvertrag-draft' }
+  )
+);
+
+4. PDF-Generierung: Layout-Perfect
+4.1 Anforderungen
+Das PDF muss exakt wie der Haus & Grund Vertrag aussehen:
+
+Kopfzeile mit Logo
+Seitenzahlen "Seite X von 10"
+Seriennummer im Footer
+Saubere Seitenumbrüche (kein Paragraph-Split)
+Tabellen im § 5.2 (Betriebskosten)
+Hausordnung als separate Seite
+
+4.2 Tech-Stack
+Option A: @react-pdf/renderer (empfohlen)
+tsximport { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 40,
+    fontSize: 10,
+    fontFamily: 'Times-Roman'
+  },
+  header: {
+    flexDirection: 'row',
+    marginBottom: 20,
+    borderBottom: 1
+  },
+  paragraph: {
+    marginBottom: 15
+  },
+  section_title: {
+    fontSize: 12,
+    fontFamily: 'Times-Bold',
+    marginBottom: 10
+  }
+});
+
+const MietvertragPDF = ({ data }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Image src="/haus-und-grund-logo.png" />
+        <Text>Mietvertrag für Wohnraum</Text>
+      </View>
+      
+      {/* § 1 Mieträume */}
+      <View style={styles.paragraph}>
+        <Text style={styles.section_title}>§ 1 Mieträume</Text>
+        <Text>
+          Vermietet wird zu Wohnzwecken die Wohnung: {data.adresse.strasse} {data.adresse.hausnummer}
+        </Text>
+        <Text>im {data.geschoss} Geschoss...</Text>
+      </View>
+      
+      {/* § 5.2 Betriebskosten-Tabelle */}
+      <View style={styles.betriebskosten_table}>
+        <View style={styles.table_row}>
+          <Text style={styles.col_bezeichnung}>Bezeichnung</Text>
+          <Text style={styles.col_schluessel}>Abrechnungsschlüssel</Text>
+        </View>
+        {data.betriebskosten.heizung.aktiv && (
+          <View style={styles.table_row}>
+            <Text>a) Heizung</Text>
+            <Text>{data.betriebskosten.heizung.abrechnungsschluessel}</Text>
+          </View>
+        )}
+        {/* ... */}
+      </View>
+      
+      {/* Footer mit Seitenzahl */}
+      <Text style={styles.footer} fixed>
+        Seite {pageNumber} von 10 | Seriennummer: {data.seriennummer}
+      </Text>
+    </Page>
+    
+    {/* Weitere Seiten... */}
+    
+    {/* Hausordnung als eigene Seite */}
+    <Page size="A4" style={styles.page}>
+      <HausordnungComponent />
+    </Page>
+  </Document>
+);
+Option B: Puppeteer (server-side)
+Falls das Layout zu komplex wird, nutze HTML + CSS:
+typescript// api/generate-pdf.ts
+import puppeteer from 'puppeteer';
+import { renderToStaticMarkup } from 'react-dom/server';
+
+export async function generateMietvertragPDF(data: MietvertragDaten) {
+  const html = renderToStaticMarkup(<MietvertragHTML data={data} />);
+  
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  
+  await page.setContent(html, { waitUntil: 'networkidle0' });
+  
+  const pdf = await page.pdf({
+    format: 'A4',
+    printBackground: true,
+    margin: {
+      top: '20mm',
+      bottom: '20mm',
+      left: '15mm',
+      right: '15mm'
+    },
+    displayHeaderFooter: true,
+    headerTemplate: `<div style="font-size:10px; width:100%; text-align:center;">
+      Mietvertrag für Wohnraum
+    </div>`,
+    footerTemplate: `<div style="font-size:9px; width:100%; text-align:center;">
+      Seite <span class="pageNumber"></span> von <span class="totalPages"></span>
+    </div>`
+  });
+  
+  await browser.close();
+  return pdf;
+}
+4.3 Seitenumbruch-Logik
+Wichtig: Kein Paragraph darf mitten durchgetrennt werden!
+css/* Im HTML/CSS Ansatz */
+.paragraph {
+  page-break-inside: avoid;
+}
+
+.section {
+  page-break-after: auto;
+}
+
+.hausordnung {
+  page-break-before: always;
+}
+
+5. Tech-Stack & Architektur
+5.1 Empfohlener Stack
+json{
+  "frontend": {
+    "framework": "Next.js 14 (App Router)",
+    "ui": "shadcn/ui + Tailwind CSS",
+    "forms": "react-hook-form + zod",
+    "state": "zustand mit persist middleware",
+    "pdf": "@react-pdf/renderer"
+  },
+  "backend": {
+    "api": "Next.js API Routes / Server Actions",
+    "validation": "zod schemas",
+    "pdf_fallback": "puppeteer (falls @react-pdf nicht ausreicht)"
+  },
+  "deployment": {
+    "hosting": "Vercel",
+    "storage": "localStorage (client) + optional Supabase (cloud save)"
+  }
+}
+```
+
+### 5.2 Projektstruktur
+```
+/app
+  /wizard
+    /[step]
+      page.tsx              # Wizard Step Seiten
+  /review
+    page.tsx                # Zusammenfassung
+  /api
+    /generate-pdf
+      route.ts              # PDF-Generierung
+      
+/components
+  /wizard
+    ParteienForm.tsx
+    ObjektForm.tsx
+    MieteForm.tsx
+    BetriebskostenTable.tsx
+    ReviewSummary.tsx
+  /pdf
+    MietvertragPDF.tsx      # @react-pdf Component
+    HausordnungPDF.tsx
+    
+/lib
+  /validation
+    rules.ts                # Validation Rules
+    schema.ts               # Zod Schemas
+  /pdf
+    generator.ts            # PDF Logik
+  /store
+    mietvertrag.ts          # Zustand Store
+    
+/types
+  mietvertrag.d.ts          # TypeScript Interfaces
+  
+/public
+  /assets
+    haus-und-grund-logo.png
+
+6. Besonderheiten & Fallstricke
+6.1 Rechtliche Risiken
+typescript// Diese Klauseln dürfen NICHT starr sein:
+const UNWIRKSAME_KLAUSELN = {
+  tierhaltung_generell_verboten: {
+    unwirksam: true,
+    grund: 'Interessensabwägung erforderlich (BGH VIII ZR 168/11)',
+    alternative: 'Tierhaltung bedarf der Zustimmung, die nur aus wichtigem Grund verweigert werden darf'
+  },
+  
+  schoenheitsreparaturen_starre_fristen: {
+    unwirksam: true,
+    grund: 'BGH VIII ZR 242/12',
+    alternative: 'Im Allgemeinen sind ... durchzuführen'
+  },
+  
+  kuendigungsverzicht_ueber_4_jahre: {
+    unwirksam: true,
+    grund: '§ 575 Abs. 3 BGB',
+    alternative: 'Max. 4 Jahre'
+  }
+};
+
+// Implementiere Warnungen:
+if (user_input.kuendigungsverzicht_jahre > 4) {
+  showError('Kündigungsverzicht max. 4 Jahre zulässig');
+}
+6.2 Dynamische Vertragsbestandteile
+Auto-Include Logic:
+typescriptfunction getRelevanteParagraphen(data: MietvertragDaten): string[] {
+  const paragraphen = [
+    '§1', '§2', '§3', '§4', '§5', '§8', '§9', '§10', 
+    '§11', '§12', '§13', '§14', '§15', '§16', '§17', 
+    '§18', '§20', '§21', '§22', '§23'
+  ];
+  
+  // Conditional:
+  if (data.mieterhoehung.typ === 'staffel') paragraphen.splice(5, 0, '§6');
+  if (data.mieterhoehung.typ === 'index') paragraphen.splice(5, 0, '§7');
+  if (data.mieter.length > 1) paragraphen.splice(17, 0, '§19');
+  
+  return paragraphen;
+}
+6.3 Datenschutz (§ 22)
+Wichtig: Jeder Vertrag muss DSGVO-konform sein!
+
+Datenschutzhinweise MÜSSEN als Seite 9 enthalten sein
+Vermieter-Name muss eingefügt werden
+Unterschriftsfelder generieren
+
+
+7. Testing & Compliance
+7.1 Test-Cases
+typescriptdescribe('Mietvertrag Generator', () => {
+  test('Kaution: Maximal 3 Monatsmieten', () => {
+    const data = { grundmiete: { summe: 800 }, kaution: { betrag: 2500 } };
+    expect(validate(data)).toContainError('Kaution zu hoch');
+  });
+  
+  test('Befristung: Grund muss angegeben sein', () => {
+    const data = { vertragsart: 'befristet', befristung: { grundBeschreibung: '' } };
+    expect(validate(data)).toContainError('Befristungsgrund fehlt');
+  });
+  
+  test('PDF: Alle Paragraphen vorhanden', async () => {
+    const pdf = await generatePDF(testData);
+    expect(pdf).toContainText('§ 1 Mieträume');
+    expect(pdf).toContainText('§ 23 Wirksamkeit');
+  });
+});
+7.2 Compliance Checklist
+
+ § 575 BGB: Befristungsgrund schriftlich mitgeteilt
+ § 551 BGB: Kaution max. 3 Monatsmieten
+ § 556 BGB: Betriebskostenverordnung eingehalten
+ § 557a BGB: Staffelmiete mind. 12 Monate unverändert
+ BGH-Rechtsprechung: Kleinreparaturklausel angemessen
+ DSGVO: Datenschutzhinweise enthalten
+
+
+8. Next Steps: Implementierung
+Phase 1: MVP (1-2 Wochen)
+
+Basic Wizard (6 Steps)
+Einfaches PDF (nur Text, ohne perfektes Layout)
+Validierung der Pflichtfelder
+
+Phase 2: Legal Compliance (1 Woche)
+
+Alle Validation Rules implementieren
+Conditional Paragraphen
+Rechtssichere Formulierungen
+
+Phase 3: PDF Perfection (1 Woche)
+
+Layout wie Haus & Grund Vorlage
+Hausordnung als Anlage
+Seitenzahlen, Logo, Tabellen
+
+Phase 4: UX Polish (1 Woche)
+
+Live-Vorschau
+Fortschrittsbalken
+localStorage-Persistenz
+Error Handling

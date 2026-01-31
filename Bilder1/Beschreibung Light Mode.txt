@@ -1,0 +1,264 @@
+Design-Beschreibung: Immobilien-App (Light Mode)
+Farbpalette
+Primärfarbe (Akzentfarbe):
+
+Türkis/Cyan (#00BCD4 oder ähnlich) - identisch zum Dark Mode
+Wird verwendet für: Aktive Elemente, Icons, Hervorhebungen, Button-Hintergründe
+
+Hintergrundfarben:
+
+Haupt-Hintergrund: Sehr helles Grau, fast Off-White (#F5F5F7 oder ähnlich)
+Card-Hintergrund: Reines Weiß (#FFFFFF)
+Eingabefeld-Hintergrund: Sehr helles Grau/Weiß mit subtiler Textur
+
+Textfarben:
+
+Primärtext: Dunkelschwarz/Anthrazit (#1A1A1A)
+Sekundärtext/Labels: Mittelgrau (#757575)
+Akzent-Text: Türkis (wie Primärfarbe)
+
+Border/Trennlinien:
+
+Sehr helles Grau (#E0E0E0 oder heller)
+Kaum sichtbar, sehr subtil
+
+Layout-Struktur
+Header-Bereich (oben)
+
+Höhe: ca. 80-100px
+Hintergrund: Weiß oder sehr helles Grau (gleich wie Haupthintergrund)
+Links: Runder Button (Home-Icon)
+
+Form: Perfekter Kreis
+Hintergrund: Vollflächig türkis ausgefüllt
+Icon: Weißes Haus-Symbol (filled)
+Größe: ca. 56x56px
+
+
+Mitte: Großer schwarzer Titel-Text
+Rechts: Zwei Icons nebeneinander
+
+Plus-Icon (outline style)
+Papierkorb-Icon (outline style)
+Beide in Schwarz/Dunkelgrau, gleiche Größe
+
+
+
+Hauptbereich
+Obere Card (Objektauswahl):
+
+Hintergrund: Weißer Card-Container
+Schatten: Sehr subtiler, weicher Schatten (elevation 1-2)
+Border-radius: ca. 16-20px
+Padding: ca. 20-24px
+Layout: Zweispaltig
+
+Links: Textinhalte mit türkisem Label oben
+Rechts: Runder Button mit Lupe-Icon
+
+Hintergrund: Helles Türkis (pastell/aufgehellt, fast mint)
+Icon: Türkis (dunkler als Hintergrund)
+Größe: ca. 56x56px
+Sehr weicher Look
+
+
+
+
+
+Große Formular-Card (Grunddaten):
+
+Hintergrund: Weißer Card-Stil
+Schatten: Identisch zur oberen Card
+Padding: ca. 24px
+Margin zwischen Cards: ca. 16-20px
+Header der Card:
+
+Linker vertikaler Akzent-Balken (türkis, ca. 4px breit, 40px hoch)
+Titel daneben in Schwarz
+Rechts: Runder Button mit Chevron-Up-Icon
+
+Hintergrund: Helles Türkis (pastell, wie Lupen-Button)
+Icon: Türkis
+
+
+
+
+
+Eingabefelder:
+
+Stil: Outlined/Border-Style (sehr subtil)
+Border: Sehr dünner Rahmen in Hellgrau (kaum sichtbar)
+Hintergrund: Sehr leicht gräuliches Weiß (fast transparent)
+Border-Radius: ca. 12px
+Label: Kleiner Text über dem Feld in Mittelgrau
+Eingabetext: Schwarz/Dunkelgrau
+Padding innen: ca. 16px vertikal, 20px horizontal
+Hover/Focus-State: Border wird leicht dunkler (nicht im Screenshot sichtbar)
+
+Feld-Anordnung:
+
+Vollbreite Felder für längere Eingaben
+Zweispaltige Anordnung für kürzere Felder
+
+PLZ (links, schmaler ~40%) / Ort (rechts, breiter ~60%)
+Wohnfläche (links) / Baujahr (rechts)
+Grundstück (links) / Einheiten (rechts)
+
+
+Gap zwischen Spalten: ca. 12-16px
+
+Spezielle Feld-Details:
+
+Einheit-Anzeiger (m²): Türkis, rechts im Feld positioniert, kleinere Schrift
+
+Bottom Navigation Bar
+Container:
+
+Höhe: ca. 80px
+Hintergrund: Weiß oder sehr helles Grau
+Border-top: Sehr subtile helle Linie (optional)
+Abgerundete obere Ecken: ca. 24px
+Leichter Schatten nach oben (reversed elevation)
+
+Tab-Items (4 Stück, gleichmäßig verteilt):
+
+Icon-Größe: ca. 24x24px
+Icon-Stil: Outlined (Stroke-basiert)
+Aktiver Tab (ganz links):
+
+Hintergrund: Helles Türkis-pastell (fast mint, sehr aufgehellt)
+Transparenz: Leicht transparent/semi-opaque
+Form: Pill-Shape/Rounded Rectangle
+Icon: Türkis (dunkel), filled style
+Text: Türkis
+Padding: Großzügig um Icon und Text
+
+
+Inaktive Tabs:
+
+Icon: Mittelgrau
+Text: Mittelgrau
+Kein Hintergrund
+Outline-Icons
+
+
+
+Tab-Icons von links:
+
+Haus (filled bei Aktiv, outline bei Inaktiv)
+Dokument mit Währungssymbol (Geldbörse/Rechnung)
+Balkendiagramm/Analytics (Kennzahlen)
+Zahnrad/Einstellungen
+
+Design-Prinzipien
+Elevation & Schatten:
+
+Cards: Sehr subtile, weiche Schatten
+
+Blur-radius: ca. 20-30px
+Spread: minimal
+Opacity: sehr niedrig (10-15%)
+Y-Offset: 4-8px
+
+
+Kein starker Kontrast, sondern sanfte Trennung
+Bottom Nav: Reversed Shadow (nach oben)
+
+Spacing:
+
+Großzügige Abstände zwischen Cards: ca. 16-20px
+Padding in Cards: 20-24px
+Abstand zwischen Eingabefeldern: 16px vertikal
+Margin zum Bildschirmrand: ca. 16px links/rechts
+
+Kontrast:
+
+Sehr weich und zurückhaltend
+Keine harten Linien oder starke Kontraste
+Primär durch subtile Schatten und leichte Grautöne getrennt
+Türkis als einziger kräftiger Farbakzent
+
+Typografie:
+
+Labels: Klein, Mittelgrau, Capitalize oder Sentence case
+Eingaben: Mittelgroß, Schwarz, Regular Weight
+Titel: Groß, Schwarz, Bold/Semi-Bold
+Hierarchie durch Größe, Gewicht und Graustufen
+
+Interaktive Elemente:
+
+Runde Buttons: Perfekte Kreise mit hellem Türkis-Hintergrund
+Pill-shaped Hervorhebung: Sehr sanft, pastell-türkis
+Eingabefelder: Minimalistisch mit kaum sichtbarem Border
+Alle Ecken abgerundet (moderne, weiche UI)
+Hover-States (nicht sichtbar, aber anzunehmen):
+
+Leichte Verdunklung der türkisen Elemente
+Border-Verstärkung bei Feldern
+
+
+
+Icon-Stil:
+
+Einheitlich: Outline/Stroke-Style (2px Stärke)
+Ausnahme: Aktiver Home-Button ist filled
+Abgerundete Linienenden (rounded caps)
+Konsistente Größe über alle Screens
+
+Unterschiede zum Dark Mode
+Farbumkehrung:
+
+Hintergründe: Von dunkel zu hell
+Text: Von hell zu dunkel
+Cards: Von dunkelgrau zu weiß
+
+Identisch geblieben:
+
+Türkis-Akzentfarbe (gleicher Hex-Wert)
+Layout-Struktur
+Spacing und Proportionen
+Icon-Stil
+Border-Radius-Werte
+
+Anpassungen:
+
+Schatten: Im Light Mode sichtbar, im Dark Mode kaum/nicht vorhanden
+Türkis-Buttons: Im Light Mode heller/pastell, im Dark Mode dunkler
+Kontraste: Im Light Mode weicher, im Dark Mode stärker
+
+Zusätzliche visuelle Details
+Akzent-Elemente:
+
+Vertikaler Balken: Türkis, 4px Breite, ~40px Höhe
+Suffix-Texte (m²): Türkis, kleinere Font-Size
+Runde Buttons: Durchgehend mit hellem Türkis-Ton
+
+Materialität:
+
+Paper-artige Cards mit subtilen Schatten
+Floating elements wirken leicht erhoben
+Glass-morphism-Ansatz bei aktiven Tab-Hintergründen (sehr subtil)
+
+Barrierefreiheit:
+
+Ausreichend Kontrast zwischen Text und Hintergrund
+Große Touch-Targets (min. 48x48px)
+Klare visuelle Hierarchie
+
+Responsive Details:
+
+Mobile-first Design
+Fullwidth Cards mit Margin
+Flexible Grid mit Media Queries (anzunehmen)
+Bottom Navigation fixiert am unteren Rand
+
+
+Material Design 3 / Material You Inspiration:
+
+Surface-basiertes Layout mit Elevation-System
+Dynamische Farbpalette (Türkis als Seed-Color)
+Rounded corners überall
+Minimalistischer Outline-TextField-Stil
+Standard Bottom Navigation Component
+Floating Action Button Style für runde Icon-Buttons
+Light theme mit sehr hoher Helligkeit (high-key palette)

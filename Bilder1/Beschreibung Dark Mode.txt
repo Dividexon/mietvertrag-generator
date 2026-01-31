@@ -1,0 +1,185 @@
+Design-Beschreibung: Immobilien-App (Dark Mode)
+Farbpalette
+Primärfarbe (Akzentfarbe):
+
+Helles Cyan/Türkis (#00BCD4 oder ähnlich)
+Wird verwendet für: Icons, aktive Elemente, Hervorhebungen, Textakzente
+
+Hintergrundfarben:
+
+Haupt-Hintergrund: Sehr dunkles Blau-Schwarz (#0A0E1A oder ähnlich)
+Card-Hintergrund: Dunkelgrau-Blau (#1A2332 oder ähnlich) - leicht aufgehellt gegenüber dem Haupthintergrund
+Eingabefeld-Hintergrund: Noch dunkleres Grau mit leicht transparentem Effekt
+
+Textfarben:
+
+Primärtext: Weiß/Hellgrau
+Sekundärtext/Labels: Mittleres Grau
+Akzent-Labels: Türkis (wie Primärfarbe)
+
+Layout-Struktur
+Header-Bereich (oben)
+
+Höhe: ca. 80-100px
+Links: Runder Button (Home-Icon)
+
+Form: Perfekter Kreis
+Hintergrund: Vollflächig türkis ausgefüllt
+Icon: Dunkles Haus-Symbol (filled)
+Größe: ca. 56x56px
+
+
+Mitte: Großer weißer Titel-Text
+Rechts: Zwei Icons nebeneinander
+
+Plus-Icon (outline style)
+Papierkorb-Icon (outline style)
+Beide in Weiß, gleiche Größe wie der Home-Button
+
+
+
+Hauptbereich
+Obere Card (Objektauswahl):
+
+Hintergrund: Dunkelgraue Card mit abgerundeten Ecken (ca. 16px border-radius)
+Padding: ca. 20-24px
+Layout: Zweispaltig
+
+Links: Textinhalte mit türkisem Label oben
+Rechts: Runder Button mit Lupe-Icon
+
+Hintergrund: Türkis (halbtransparent/dunkler als Primärfarbe)
+Icon: Türkis/Weiß
+Größe: ca. 56x56px
+
+
+
+
+
+Große Formular-Card (Grunddaten):
+
+Hintergrund: Gleicher dunkler Card-Stil
+Padding: ca. 24px
+Header der Card:
+
+Linker vertikaler Akzent-Balken (türkis, ca. 4px breit, 40px hoch)
+Titel daneben in Weiß
+Rechts: Runder Button mit Chevron-Up-Icon (türkis)
+
+
+
+Eingabefelder:
+
+Stil: Outlined/Border-Style
+Border: Dünner Rahmen in Dunkelgrau
+Border-Radius: ca. 12px
+Label: Kleiner Text über dem Feld in Grau
+Eingabetext: Weiß
+Padding innen: ca. 16px vertikal, 20px horizontal
+
+Feld-Anordnung:
+
+Vollbreite Felder für längere Eingaben
+Zweispaltige Anordnung für kürzere Felder (PLZ/Ort, Wohnfläche/Baujahr)
+Einheit-Anzeiger (m²): Türkis, rechts im Feld positioniert
+
+Spezielle Feld-Typen:
+
+Dropdown-Felder: Gleiches Design wie Eingabefelder
+
+Bottom Navigation Bar
+Container:
+
+Höhe: ca. 80px
+Hintergrund: Leicht aufgehelltes Dunkelgrau (wie Cards)
+Border-top: Sehr subtile Linie (optional)
+Abgerundete obere Ecken: ca. 24px
+
+Tab-Items (4 Stück, gleichmäßig verteilt):
+
+Icon-Größe: ca. 24x24px
+Icon-Stil: Outlined (nicht ausgefüllt), außer aktiver Tab
+Aktiver Tab (ganz links):
+
+Hintergrund: Dunkle türkise Fläche mit starkem border-radius (Pill-Shape)
+Icon: Weiß, filled
+Text: Türkis
+Hervorhebung: Gesamter Button-Bereich ist türkis hinterlegt
+
+
+Inaktive Tabs:
+
+Icon: Grau
+Text: Grau
+Kein Hintergrund
+
+
+
+Tab-Icons von links:
+
+Haus (filled bei Aktiv)
+Dokument/Rechnung mit Währungssymbol
+Balkendiagramm/Analytics
+Zahnrad/Einstellungen
+
+Design-Prinzipien
+Spacing:
+
+Großzügige Abstände zwischen Cards: ca. 16-20px
+Padding in Cards: 20-24px
+Abstand zwischen Eingabefeldern: 16px
+
+Elevations/Schatten:
+
+Cards: Sehr subtiler Schatten oder gar keiner (flat design)
+Leichte Erhöhung durch Farbkontrast zum Hintergrund
+
+Typografie:
+
+Labels: Klein, Uppercase oder Capitalize, mittleres Gewicht
+Eingaben: Mittelgroß, Regular Weight
+Titel: Groß, Bold/Semi-Bold
+Hierarchie durch Größe und Farbe
+
+Interaktive Elemente:
+
+Runde Buttons für Icons (perfekte Kreise)
+Pill-shaped Hervorhebung für aktive Tabs
+Eingabefelder mit Border (kein Fill)
+Alle Ecken abgerundet (moderne, weiche UI)
+
+Icon-Stil:
+
+Einheitlich: Outline/Stroke-Style
+Ausnahme: Aktive Elemente können filled sein
+Liniendicke: ca. 2px
+Abgerundete Linienenden
+
+Zusätzliche visuelle Details
+Akzent-Elemente:
+
+Vertikaler Balken links neben Überschriften (türkis, 4px x ~40px)
+Kleine Suffix-Texte (wie "m²") in Türkis neben Eingaben
+Numerische Werte können highlighted sein
+
+Statusfarben:
+
+Primär: Türkis für positive/aktive Elemente
+Neutral: Grau für inaktive Elemente
+Keine sichtbaren Error- oder Warning-States im Screenshot
+
+Responsive Verhalten (sichtbar):
+
+Mobile-first Design
+Fullwidth Cards mit Margin links/rechts
+Flexible Grid für zweispaltige Felder
+
+
+Material Design Inspiration:
+Das Design folgt modernen Material Design 3 Prinzipien mit:
+
+Surface-basiertem Layout
+Elevated Cards
+Floating Action Button Stil für runde Buttons
+Bottom Navigation Component
+Outlined TextField Style

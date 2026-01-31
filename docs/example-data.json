@@ -1,0 +1,113 @@
+{
+  "vermieter": {
+    "name_firma": "Max Mustermann",
+    "strasse": "Musterstr. 15",
+    "plz": "19455",
+    "ort": "Musterstadt",
+    "vertreten_durch": ""
+  },
+  "mieter": [
+    {
+      "vorname": "Maria",
+      "nachname": "Musterfrau",
+      "geburtsdatum": "04.03.1982",
+      "strasse": "Musterstrasse 13",
+      "plz": "19555",
+      "ort": "Musterstadt"
+    }
+  ],
+  "mietobjekt": {
+    "strasse": "Musterstr. 19",
+    "plz": "19855",
+    "ort": "Musterort",
+    "geschoss": "2.OG",
+    "zimmer_anzahl": 3,
+    "ausstattung": {
+      "kueche": true,
+      "kochnische": false,
+      "balkon_terrasse": true,
+      "diele": true,
+      "bad_dusche": true,
+      "wc_raum": false,
+      "boden": false,
+      "keller": true,
+      "carport": false,
+      "garage": false,
+      "stellplatz": true,
+      "garten": false
+    },
+    "stellplatz_nummer": "Nr. 110",
+    "gemeinschaftseinrichtungen": "",
+    "raeume_sonstiges": ""
+  },
+  "schluessel": {
+    "schliessanlage": 2,
+    "haus": 2,
+    "wohnung": 3,
+    "briefkasten": 2,
+    "sonstige": ""
+  },
+  "mietzeit": {
+    "typ": "unbefristet",
+    "beginn": "01.02.2026",
+    "ende": "",
+    "befristungsgrund": ""
+  },
+  "zahlungen": {
+    "grundmiete_wohnung": 500,
+    "grundmiete_stellplatz": 50,
+    "grundmiete_sonstiges": 0,
+    "grundmiete_sonstiges_beschreibung": "",
+    "betriebskosten_vorauszahlung": 150,
+    "mietsicherheit_betrag": 1500,
+    "mietsicherheit_zahlungsart": "Überweisung",
+    "bankverbindung": {
+      "iban": "DE89 3704 0044 0532 0130 00",
+      "bic": "COBADEFFXXX",
+      "kontoinhaber": "Max Mustermann"
+    }
+  },
+  "betriebskosten": {
+    "heizung": { "schluessel": "5" },
+    "warmwasser": { "schluessel": "5" },
+    "wasser": { "schluessel": "4" },
+    "muell": { "schluessel": "2" },
+    "grundsteuer": { "schluessel": "1" },
+    "versicherung": { "schluessel": "1" },
+    "beleuchtung": { "schluessel": "1" },
+    "rauchmelder": { "schluessel": "3" }
+  },
+  "staffelmiete": {
+    "aktiv": false,
+    "staffeln": []
+  },
+  "indexmiete": {
+    "aktiv": false,
+    "start": "",
+    "schwelle": 3
+  },
+  "heizung": {
+    "von": "6",
+    "bis": "23",
+    "art": "Zentralheizung (Gas)"
+  },
+  "kleinreparaturen": {
+    "einzelfall": 100,
+    "jahreshoechstbetrag": 450
+  },
+  "schoenheitsreparaturen": {
+    "mieter_pflicht": true
+  },
+  "sonstige_vereinbarungen": "",
+  "unterschrift": {
+    "ort": "Bremen",
+    "datum": "01.02.2026",
+    "vermieter_signatur": "",
+    "mieter_signatur": "",
+    "mieter2_signatur": "",
+    "mieter3_signatur": ""
+  },
+  "datenschutz": {
+    "beauftragter": ""
+  }
+}
